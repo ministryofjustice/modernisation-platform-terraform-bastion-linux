@@ -125,6 +125,13 @@ resource "aws_s3_bucket" "default" {
 
 }
 
+resource "aws_s3_bucket_public_access_block" "default" {
+  bucket = aws_s3_bucket.default.id
+
+  block_public_acls   = true
+  block_public_policy = true
+}
+
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
   bucket     = aws_s3_bucket.default.id
   key        = "public-keys/README.txt"
