@@ -125,6 +125,13 @@ resource "aws_s3_bucket" "default" {
 
 }
 
+resource "aws_s3_bucket_public_access_block" "default" {
+  bucket = aws_s3_bucket.default.id
+
+  block_public_acls   = true
+  block_public_policy = true
+}
+
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
   bucket     = aws_s3_bucket.default.id
   key        = "public-keys/README.txt"
@@ -373,7 +380,7 @@ resource "aws_instance" "bastion_linux" {
   associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.bastion_profile.id
   ebs_optimized               = true
-  monitoring                  = false
+  monitoring                  = true
   vpc_security_group_ids      = [aws_security_group.bastion_linux.id]
   subnet_id                   = data.aws_subnet.private_az_a.id
 
