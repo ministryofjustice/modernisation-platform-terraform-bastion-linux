@@ -380,7 +380,7 @@ resource "aws_instance" "bastion_linux" {
   associate_public_ip_address = false
   iam_instance_profile        = aws_iam_instance_profile.bastion_profile.id
   ebs_optimized               = true
-  monitoring                  = false
+  monitoring                  = true
   vpc_security_group_ids      = [aws_security_group.bastion_linux.id]
   subnet_id                   = data.aws_subnet.private_az_a.id
 
