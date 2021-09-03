@@ -127,6 +127,20 @@ resource "aws_s3_bucket" "default" {
     target_bucket = aws_s3_bucket.default.id
     target_prefix = "log/"
   }
+
+  replication_configuration {
+    role = aws_iam_role.replication.arn
+    rules {
+      id     = "rule1"
+      prefix = ""
+      status = "Enabled"
+
+      destination {
+        bucket        = aws_s3_bucket.destination.arn
+        storage_class = "STANDARD"
+      }
+    }
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "default" {
