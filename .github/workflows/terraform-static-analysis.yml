@@ -26,6 +26,7 @@ jobs:
         with:
           scan_type: single
           tfsec_exclude: AWS089, AWS099, AWS009, AWS007
+          checkov_exclude: CKV_GIT_1, CKV_AWS_144
 
   terraform-static-analysis-full-scan:
     name: Terraform Static Analysis - scan all directories
