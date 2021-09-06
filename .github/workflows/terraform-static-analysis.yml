@@ -25,7 +25,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           scan_type: single
-          tfsec_exclude: AWS089, AWS099, AWS009, AWS007
+          tfsec_exclude: AWS089, AWS099, AWS009
           # Need to resolve: CKV_AWS_144
           checkov_exclude: CKV_AWS_144
 
