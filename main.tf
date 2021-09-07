@@ -74,7 +74,7 @@ resource "aws_kms_alias" "bastion_s3_alias" {
 resource "aws_s3_bucket" "replica" {
   bucket = "${var.tags_prefix}-${var.bucket_name}-replica"
   acl    = "private"
-  region   = "eu-west-1" # Ireland
+  region = "eu-west-1" # Ireland
 
   server_side_encryption_configuration {
     rule {
