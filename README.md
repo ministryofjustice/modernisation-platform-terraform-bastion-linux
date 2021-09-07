@@ -1,5 +1,3 @@
-<!--- BEGIN_TF_DOCS --->
-
 # Bastion Linux Server Creation
 
 Terraform module for creating Linux bastion servers in member AWS accounts
@@ -32,6 +30,7 @@ create file named 'bastion_linux.json' and populate with below format. Add user 
 ```
 
 create a bastion_linux.tf file as below, change options as required
+
 ```terraform
 locals {
   public_key_data = jsondecode(file("./bastion_linux.json"))
@@ -70,8 +69,8 @@ module "bastion_linux" {
   tags_prefix = terraform.workspace
 }
 ```
-
-## Looking for issues?
-If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+<!--- BEGIN_TF_DOCS --->
 
 <!--- END_TF_DOCS --->
+## Looking for issues?
+If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
