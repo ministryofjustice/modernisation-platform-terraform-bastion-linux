@@ -123,13 +123,19 @@ resource "aws_s3_bucket" "default" {
     },
   )
 
+  logging {
+    target_bucket = aws_s3_bucket.default.id
+    target_prefix = "log/"
+  }
 }
 
 resource "aws_s3_bucket_public_access_block" "default" {
   bucket = aws_s3_bucket.default.id
 
-  block_public_acls   = true
-  block_public_policy = true
+  block_public_acls       = true
+  block_public_policy     = true
+  ignore_public_acls      = true
+  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
