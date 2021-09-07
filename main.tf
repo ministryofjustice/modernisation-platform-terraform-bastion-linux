@@ -118,10 +118,10 @@ resource "aws_s3_bucket" "replica" {
   }
 
   tags = merge(
-  var.tags_common,
-  {
-    Name = "bastion-linux"
-  },
+    var.tags_common,
+    {
+      Name = "bastion-linux"
+    },
   )
 
   logging {
