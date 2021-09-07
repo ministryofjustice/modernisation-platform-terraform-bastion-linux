@@ -1,3 +1,5 @@
+<!--- BEGIN_TF_DOCS --->
+
 # Bastion Linux Server Creation
 
 Terraform module for creating Linux bastion servers in member AWS accounts
@@ -68,10 +70,8 @@ module "bastion_linux" {
   tags_prefix = terraform.workspace
 }
 ```
-<!--- BEGIN_TF_DOCS --->
-
-<!--- END_TF_DOCS --->
-
 
 ## Looking for issues?
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+
+<!--- END_TF_DOCS --->
