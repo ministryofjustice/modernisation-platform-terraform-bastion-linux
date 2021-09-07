@@ -7,10 +7,10 @@ variable "region" {
 variable "app_name" {
   type        = string
   description = "Name of application"
-  # validation {
-  #   condition     = can(regex("^[A-Za-z0-9][A-Za-z0-9-.]{1,61}[A-Za-z0-9]$", var.app_name))
-  #   error_message = "Invalid name for application supplied in variable app_name."
-  # }
+  validation {
+    condition     = can(regex("^[A-Za-z0-9][A-Za-z0-9-.]{1,61}[A-Za-z0-9]$", var.app_name))
+    error_message = "Invalid name for application supplied in variable app_name."
+  }
 }
 
 variable "business_unit" {
@@ -41,48 +41,48 @@ variable "extra_user_data_content" {
 variable "allow_ssh_commands" {
   type        = bool
   description = "Allow SSH commands to be specified"
-  # validation {
-  #   condition     = (var.allow_ssh_commands == true || var.allow_ssh_commands == false)
-  #   error_message = "Variable allow_ssh_commands must be boolean."
-  # }
+  validation {
+    condition     = (var.allow_ssh_commands == true || var.allow_ssh_commands == false)
+    error_message = "Variable allow_ssh_commands must be boolean."
+  }
 }
 
 ## S3
 variable "bucket_name" {
   type        = string
   description = "Bucket used for bucket log storage and user public keys"
-  # validation {
-  #   condition     = can(regex("^[A-Za-z0-9][A-Za-z0-9-.]{1,61}[A-Za-z0-9]$", var.bucket_name))
-  #   error_message = "The S3 bucket name is not valid in variable bucket_name."
-  # }
+  validation {
+    condition     = can(regex("^[A-Za-z0-9][A-Za-z0-9-.]{1,61}[A-Za-z0-9]$", var.bucket_name))
+    error_message = "The S3 bucket name is not valid in variable bucket_name."
+  }
 }
 
 variable "bucket_versioning" {
   type        = bool
   description = "Enable bucket versioning or not"
-  # validation {
-  #   condition     = (var.bucket_versioning == true || var.bucket_versioning == false)
-  #   error_message = "Variable bucket_versioning must be boolean."
-  # }
+  validation {
+    condition     = (var.bucket_versioning == true || var.bucket_versioning == false)
+    error_message = "Variable bucket_versioning must be boolean."
+  }
 }
 
 variable "bucket_force_destroy" {
   type        = bool
   description = "The bucket and all objects should be destroyed when using true"
-  # validation {
-  #   condition     = (var.bucket_force_destroy == true || var.bucket_force_destroy == false)
-  #   error_message = "Variable bucket_force_destroy must be boolean."
-  # }
+  validation {
+    condition     = (var.bucket_force_destroy == true || var.bucket_force_destroy == false)
+    error_message = "Variable bucket_force_destroy must be boolean."
+  }
 }
 
 #### Logs
 variable "log_auto_clean" {
   type        = bool
   description = "Enable or not the lifecycle"
-  # validation {
-  #   condition     = (var.log_auto_clean == true || var.log_auto_clean == false)
-  #   error_message = "Variable log_auto_clean must be boolean."
-  # }
+  validation {
+    condition     = (var.log_auto_clean == true || var.log_auto_clean == false)
+    error_message = "Variable log_auto_clean must be boolean."
+  }
 }
 
 variable "log_standard_ia_days" {
