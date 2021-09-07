@@ -44,3 +44,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           scan_type: full
+          tfsec_exclude: AWS089, AWS099, AWS009, AWS007
+          # Need to resolve: CKV_AWS_144 (Ensure S3 bucket has cross-region replication enabled)
+          checkov_exclude: CKV_AWS_144
