@@ -71,6 +71,27 @@ resource "aws_kms_alias" "bastion_s3_alias" {
   target_key_id = aws_kms_key.bastion_s3.arn
 }
 
+resource "aws_s3_bucket" "replica" {
+  bucket = "${var.tags_prefix}-${var.bucket_name}-replica"
+  acl    = "private"
+  region   = "eu-west-1" # Ireland
+
+  server_side_encryption_configuration {
+    rule {
+      apply_server_side_encryption_by_default {
+        kms_master_key_id = aws_kms_key.bastion_s3.id
+        sse_algorithm     = "aws:kms"
+      }
+    }
+  }
+
+  force_destroy = var.bucket_force_destroy
+
+  versioning {
+    enabled = var.bucket_versioning
+  }
+}
+
 resource "aws_s3_bucket" "default" {
   bucket = "${var.tags_prefix}-${var.bucket_name}"
   acl    = "private"
@@ -126,6 +147,20 @@ resource "aws_s3_bucket" "default" {
   logging {
     target_bucket = aws_s3_bucket.default.id
     target_prefix = "log/"
+  }
+
+  replication_configuration {
+    role = aws_iam_role.replication.arn
+    rules {
+      id     = "rule1"
+      prefix = ""
+      status = "Enabled"
+
+      destination {
+        bucket        = aws_s3_bucket.replica.arn
+        storage_class = "STANDARD"
+      }
+    }
   }
 }
 
