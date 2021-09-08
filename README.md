@@ -157,3 +157,7 @@ No modules.
 
 ## Looking for issues?
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
+
+## Linting exclusions
+
+- `checkov_exclude: CKV_AWS_144` (Ensure S3 bucket has cross-region replication enabled): Enabling cross-region replication for the bastion module might be an overkill. Looking at the use cases provided by Amazon https://aws.amazon.com/s3/features/replication/ none of them seems relevant to our bastion logs. Besides, the checkov_exclude: CKV_AWS_144 needs to be in place anyway because checkov will require replication for the replication bucket as it cannot separate it from the regular non-replication bucket. If in the future we do decide to enable cross-region replication we should use the following terraform module, which supports cross-region replication as an optional configuration: https://github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket
