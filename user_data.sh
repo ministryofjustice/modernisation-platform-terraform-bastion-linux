@@ -27,8 +27,8 @@ sed  -i "s/002/022/g" /etc/profile
 umask 022
 #disable root login
 systemctl stop sshd
-echo "PermitRootLogin no" >> /etc/ssh/ssh_config
-echo "PermitEmptyPasswords no" >> /etc/ssh/ssh_config
+echo "PermitRootLogin no" >> /etc/ssh/sshd_config
+echo "PermitEmptyPasswords no" >> /etc/ssh/sshd_config
 systemctl start sshd
 
 
