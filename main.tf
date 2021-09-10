@@ -122,11 +122,6 @@ resource "aws_s3_bucket" "default" {
       Name = "bastion-linux"
     },
   )
-
-  logging {
-    target_bucket = aws_s3_bucket.default.id
-    target_prefix = "log/"
-  }
 }
 
 resource "aws_s3_bucket_public_access_block" "default" {
