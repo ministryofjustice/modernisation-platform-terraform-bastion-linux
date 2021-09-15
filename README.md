@@ -47,6 +47,7 @@ module "bastion_linux" {
   bucket_name           = "bastion"
   bucket_versioning     = true
   bucket_force_destroy  = true
+  bucket_replication    = true
   # public keys
   public_key_data       = local.public_key_data.keys[local.environment]
   # logs

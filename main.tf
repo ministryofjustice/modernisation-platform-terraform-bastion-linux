@@ -71,66 +71,63 @@ resource "aws_kms_alias" "bastion_s3_alias" {
   target_key_id = aws_kms_key.bastion_s3.arn
 }
 
-resource "aws_s3_bucket" "default" {
-  bucket = "${var.tags_prefix}-${var.bucket_name}"
-  acl    = "private"
+module "s3-bucket" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v4.0.0"
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = aws_kms_key.bastion_s3.id
-        sse_algorithm     = "aws:kms"
+  providers = {
+    aws.bucket-replication = aws.eu-west-2
+  }
+  bucket_prefix        = "${var.tags_prefix}-${var.bucket_name}"
+  replication_role_arn = module.s3-bucket-replication-role.role.arn
+  replication_enabled = var.bucket_replication
+
+  lifecycle_rule = [
+    {
+      id      = "main"
+      enabled = var.log_auto_clean
+      prefix  = "logs/"
+
+      tags = {
+        rule      = "log"
+        autoclean = var.log_auto_clean
+      }
+
+      transition = [
+        {
+          days          = var.log_standard_ia_days
+          storage_class = "STANDARD_IA"
+        }, {
+          days          = var.log_glacier_days
+          storage_class = "GLACIER"
+        }
+      ]
+
+      expiration = {
+        days = var.log_expiry_days
+      }
+
+      noncurrent_version_transition = [
+        {
+          days          = var.log_standard_ia_days
+          storage_class = "STANDARD_IA"
+        }, {
+          days          = var.log_glacier_days
+          storage_class = "GLACIER"
+        }
+      ]
+
+      noncurrent_version_expiration = {
+        days = var.log_expiry_days
       }
     }
-  }
-
-  force_destroy = var.bucket_force_destroy
-
-  versioning {
-    enabled = var.bucket_versioning
-  }
-
-  lifecycle_rule {
-    id      = "log"
-    enabled = var.log_auto_clean
-
-    prefix = "logs/"
-
-    tags = {
-      rule      = "log"
-      autoclean = var.log_auto_clean
-    }
-
-    transition {
-      days          = var.log_standard_ia_days
-      storage_class = "STANDARD_IA"
-    }
-
-    transition {
-      days          = var.log_glacier_days
-      storage_class = "GLACIER"
-    }
-
-    expiration {
-      days = var.log_expiry_days
-    }
-  }
+  ]
 
   tags = merge(
-    var.tags_common,
-    {
-      Name = "bastion-linux"
-    },
+  var.tags_common,
+  {
+    Name = "bastion-linux"
+  },
   )
-}
-
-resource "aws_s3_bucket_public_access_block" "default" {
-  bucket = aws_s3_bucket.default.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
 }
 
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
