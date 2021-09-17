@@ -75,6 +75,12 @@ variable "bucket_force_destroy" {
   }
 }
 
+variable "bucket_replication" {
+  type        = bool
+  description = "Activate S3 bucket replication"
+  default     = false
+}
+
 #### Logs
 variable "log_auto_clean" {
   type        = bool
