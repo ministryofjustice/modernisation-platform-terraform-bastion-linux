@@ -87,7 +87,7 @@ module "s3-bucket" {
 
   lifecycle_rule = [
     {
-      id      = "main"
+      id      = "log"
       enabled = var.log_auto_clean
       prefix  = "logs/"
 
