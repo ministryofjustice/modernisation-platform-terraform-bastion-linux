@@ -80,6 +80,9 @@ module "s3-bucket" {
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.0"
 
   providers = {
+    # Since replication_enabled is false, the below provider is not being used.
+    # Therefore, just to get around the requirement, we pass the aws.share-tenant.
+    # If replication was enabled, a different provider would be needed.
     aws.bucket-replication = aws.share-tenant
   }
   bucket_name         = "${var.bucket_name}-${var.tags_prefix}-${random_string.random6.result}"
