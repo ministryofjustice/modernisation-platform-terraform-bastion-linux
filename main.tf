@@ -71,50 +71,63 @@ resource "aws_kms_alias" "bastion_s3_alias" {
   target_key_id = aws_kms_key.bastion_s3.arn
 }
 
-resource "aws_s3_bucket" "default" {
-  bucket = "${var.tags_prefix}-${var.bucket_name}"
-  acl    = "private"
+resource "random_string" "random6" {
+  length  = 6
+  special = false
+}
 
-  server_side_encryption_configuration {
-    rule {
-      apply_server_side_encryption_by_default {
-        kms_master_key_id = aws_kms_key.bastion_s3.id
-        sse_algorithm     = "aws:kms"
+module "s3-bucket" {
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.0"
+
+  providers = {
+    # Since replication_enabled is false, the below provider is not being used.
+    # Therefore, just to get around the requirement, we pass the aws.share-tenant.
+    # If replication was enabled, a different provider would be needed.
+    aws.bucket-replication = aws.share-tenant
+  }
+  bucket_name         = "${var.bucket_name}-${var.tags_prefix}-${lower(random_string.random6.result)}"
+  replication_enabled = false
+
+  lifecycle_rule = [
+    {
+      id      = "log"
+      enabled = var.log_auto_clean
+      prefix  = "logs/"
+
+      tags = {
+        rule      = "log"
+        autoclean = var.log_auto_clean
+      }
+
+      transition = [
+        {
+          days          = var.log_standard_ia_days
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = var.log_glacier_days
+          storage_class = "GLACIER"
+        }
+      ]
+
+      expiration = {
+        days = var.log_expiry_days
+      }
+
+      noncurrent_version_transition = [
+        {
+          days          = var.log_standard_ia_days
+          storage_class = "STANDARD_IA"
+          }, {
+          days          = var.log_glacier_days
+          storage_class = "GLACIER"
+        }
+      ]
+
+      noncurrent_version_expiration = {
+        days = var.log_expiry_days
       }
     }
-  }
-
-  force_destroy = var.bucket_force_destroy
-
-  versioning {
-    enabled = var.bucket_versioning
-  }
-
-  lifecycle_rule {
-    id      = "log"
-    enabled = var.log_auto_clean
-
-    prefix = "logs/"
-
-    tags = {
-      rule      = "log"
-      autoclean = var.log_auto_clean
-    }
-
-    transition {
-      days          = var.log_standard_ia_days
-      storage_class = "STANDARD_IA"
-    }
-
-    transition {
-      days          = var.log_glacier_days
-      storage_class = "GLACIER"
-    }
-
-    expiration {
-      days = var.log_expiry_days
-    }
-  }
+  ]
 
   tags = merge(
     var.tags_common,
@@ -124,17 +137,9 @@ resource "aws_s3_bucket" "default" {
   )
 }
 
-resource "aws_s3_bucket_public_access_block" "default" {
-  bucket = aws_s3_bucket.default.id
-
-  block_public_acls       = true
-  block_public_policy     = true
-  ignore_public_acls      = true
-  restrict_public_buckets = true
-}
-
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
-  bucket     = aws_s3_bucket.default.id
+  bucket = module.s3-bucket.bucket.id
+
   key        = "public-keys/README.txt"
   content    = "Drop here the ssh public keys of the instances you want to control"
   kms_key_id = aws_kms_key.bastion_s3.arn
@@ -151,7 +156,7 @@ resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
 resource "aws_s3_bucket_object" "user_public_keys" {
   for_each = var.public_key_data
 
-  bucket     = aws_s3_bucket.default.id
+  bucket     = module.s3-bucket.bucket.id
   key        = "public-keys/${each.key}.pub"
   content    = each.value
   kms_key_id = aws_kms_key.bastion_s3.arn
@@ -269,22 +274,21 @@ data "aws_iam_policy_document" "bastion_policy_document" {
       "s3:PutObjectAcl",
       "s3:GetObject"
     ]
-    resources = ["${aws_s3_bucket.default.arn}/logs/*"]
+    resources = ["${module.s3-bucket.bucket.arn}/logs/*"]
   }
 
   statement {
     actions = [
       "s3:GetObject"
     ]
-    resources = ["${aws_s3_bucket.default.arn}/public-keys/*"]
+    resources = ["${module.s3-bucket.bucket.arn}/public-keys/*"]
   }
 
   statement {
     actions = [
       "s3:ListBucket"
     ]
-    resources = [
-    aws_s3_bucket.default.arn]
+    resources = ["${module.s3-bucket.bucket.arn}"]
 
     condition {
       test = "ForAnyValue:StringEquals"
