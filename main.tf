@@ -72,8 +72,8 @@ resource "aws_kms_alias" "bastion_s3_alias" {
 }
 
 resource "random_string" "random6" {
-  length           = 6
-  special          = false
+  length  = 6
+  special = false
 }
 
 module "s3-bucket" {
@@ -82,7 +82,7 @@ module "s3-bucket" {
   providers = {
     aws.bucket-replication = aws.share-tenant
   }
-  bucket_name        = "${var.bucket_name}-${var.tags_prefix}-${random_string.random6.result}"
+  bucket_name         = "${var.bucket_name}-${var.tags_prefix}-${random_string.random6.result}"
   replication_enabled = false
 
   lifecycle_rule = [
@@ -100,7 +100,7 @@ module "s3-bucket" {
         {
           days          = var.log_standard_ia_days
           storage_class = "STANDARD_IA"
-        }, {
+          }, {
           days          = var.log_glacier_days
           storage_class = "GLACIER"
         }
@@ -114,7 +114,7 @@ module "s3-bucket" {
         {
           days          = var.log_standard_ia_days
           storage_class = "STANDARD_IA"
-        }, {
+          }, {
           days          = var.log_glacier_days
           storage_class = "GLACIER"
         }
@@ -127,15 +127,15 @@ module "s3-bucket" {
   ]
 
   tags = merge(
-  var.tags_common,
-  {
-    Name = "bastion-linux"
-  },
+    var.tags_common,
+    {
+      Name = "bastion-linux"
+    },
   )
 }
 
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
-  bucket     = module.s3-bucket.bucket.id
+  bucket = module.s3-bucket.bucket.id
 
   key        = "public-keys/README.txt"
   content    = "Drop here the ssh public keys of the instances you want to control"
