@@ -71,15 +71,19 @@ resource "aws_kms_alias" "bastion_s3_alias" {
   target_key_id = aws_kms_key.bastion_s3.arn
 }
 
+resource "random_string" "random6" {
+  length           = 6
+  special          = false
+}
+
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v4.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.0"
 
   providers = {
-    aws.bucket-replication = aws.bucket-replication
+    aws.bucket-replication = aws.share-tenant
   }
-  bucket_prefix        = "${var.tags_prefix}-${var.bucket_name}"
-  replication_role_arn = module.s3-bucket-replication-role.role.arn
-  replication_enabled = var.bucket_replication
+  bucket_name        = "${var.bucket_name}-${var.tags_prefix}-${random_string.random6.result}"
+  replication_enabled = false
 
   lifecycle_rule = [
     {
@@ -131,7 +135,8 @@ module "s3-bucket" {
 }
 
 resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
-  bucket     = aws_s3_bucket.default.id
+  bucket     = module.s3-bucket.bucket.id
+
   key        = "public-keys/README.txt"
   content    = "Drop here the ssh public keys of the instances you want to control"
   kms_key_id = aws_kms_key.bastion_s3.arn
@@ -148,7 +153,7 @@ resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
 resource "aws_s3_bucket_object" "user_public_keys" {
   for_each = var.public_key_data
 
-  bucket     = aws_s3_bucket.default.id
+  bucket     = module.s3-bucket.bucket.id
   key        = "public-keys/${each.key}.pub"
   content    = each.value
   kms_key_id = aws_kms_key.bastion_s3.arn
@@ -266,22 +271,21 @@ data "aws_iam_policy_document" "bastion_policy_document" {
       "s3:PutObjectAcl",
       "s3:GetObject"
     ]
-    resources = ["${aws_s3_bucket.default.arn}/logs/*"]
+    resources = ["${module.s3-bucket.bucket.arn}/logs/*"]
   }
 
   statement {
     actions = [
       "s3:GetObject"
     ]
-    resources = ["${aws_s3_bucket.default.arn}/public-keys/*"]
+    resources = ["${module.s3-bucket.bucket.arn}/public-keys/*"]
   }
 
   statement {
     actions = [
       "s3:ListBucket"
     ]
-    resources = [
-    aws_s3_bucket.default.arn]
+    resources = ["${module.s3-bucket.bucket.arn}"]
 
     condition {
       test = "ForAnyValue:StringEquals"
