@@ -85,7 +85,7 @@ module "s3-bucket" {
     # If replication was enabled, a different provider would be needed.
     aws.bucket-replication = aws.share-tenant
   }
-  bucket_name         = "${var.bucket_name}-${var.tags_prefix}-${random_string.random6.result}"
+  bucket_name         = "${var.bucket_name}-${var.tags_prefix}-${lower(random_string.random6.result)}"
   replication_enabled = false
 
   lifecycle_rule = [
