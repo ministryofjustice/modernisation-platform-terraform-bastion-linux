@@ -48,7 +48,7 @@ data "template_file" "user_data" {
 
   vars = {
     aws_region              = var.region
-    bucket_name             = "${var.tags_prefix}-${var.bucket_name}"
+    bucket_name             = module.s3-bucket.bucket.id
     extra_user_data_content = var.extra_user_data_content
     allow_ssh_commands      = var.allow_ssh_commands
   }
