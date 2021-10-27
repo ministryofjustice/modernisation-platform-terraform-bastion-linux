@@ -408,3 +408,91 @@ resource "aws_instance" "bastion_linux" {
     }
   )
 }
+
+resource "aws_launch_template" "bastion_linux_template" {
+  name = "bastion_linux_template"
+
+  block_device_mappings {
+    device_name = "/dev/xvda"
+
+    ebs {
+      volume_size = 8
+    }
+  }
+
+  ebs_optimized = true
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.bastion_profile.id
+  }
+
+  image_id = data.aws_ami.linux_2_image.id
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type = "t3.micro"
+
+  metadata_options {
+    http_endpoint               = "enabled" # defaults to enabled but is required if http_tokens is specified
+    http_put_response_hop_limit = 1         # default is 1, value values are 1 through 64
+    http_tokens                 = "required"
+  }
+
+  monitoring {
+    enabled = true
+  }
+
+  network_interfaces {
+    associate_public_ip_address = false
+  }
+
+  placement {
+    availability_zone = "${var.region}a"
+  }
+
+  vpc_security_group_ids = [aws_security_group.bastion_linux.id]
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = merge(
+    var.tags_common,
+    {
+      Name = "bastion_linux"
+    }
+    )
+  }
+
+  user_data = base64encode(data.template_file.user_data.rendered)
+}
+
+resource "aws_autoscaling_group" "bastion_daily" {
+  launch_template {
+    id      = aws_launch_template.bastion_linux_template.id
+    version = "$Latest"
+  }
+  availability_zones        = ["${var.region}a"]
+  name                      = "bastion_daily"
+  max_size                  = 1
+  min_size                  = 1
+  health_check_grace_period = 300
+  health_check_type         = "ELB"
+  force_delete              = true
+  termination_policies      = ["OldestInstance"]
+}
+
+resource "aws_autoscaling_schedule" "bastion_daily_scale_down_at_20" {
+  scheduled_action_name  = "bastion_daily_scale_down_at_20"
+  min_size               = 0
+  max_size               = 1
+  desired_capacity       = 0
+  recurrence             = "0 20 * * *" # 20.00 UTC time or 21.00 London time
+  autoscaling_group_name = aws_autoscaling_group.bastion_daily.name
+}
+
+resource "aws_autoscaling_schedule" "bastion_daily_scale_up_at_5" {
+  scheduled_action_name  = "bastion_daily_scale_up_at_7"
+  min_size               = 1
+  max_size               = 1
+  desired_capacity       = 1
+  recurrence             = "0 5 * * *" # 5.00 UTC time or 6.00 London time
+  autoscaling_group_name = aws_autoscaling_group.bastion_daily.name
+}
