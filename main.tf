@@ -448,6 +448,12 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
   health_check_type         = "ELB"
   force_delete              = true
   termination_policies      = ["OldestInstance"]
+  tags = merge(
+  var.tags_common,
+  {
+    Name = "bastion_linux"
+  }
+  )
 }
 
 resource "aws_autoscaling_schedule" "bastion_linux_scale_down" {
