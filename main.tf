@@ -442,6 +442,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
   network_interfaces {
     associate_public_ip_address = false
+    subnet_id              = data.aws_subnet.private_az_a.id
   }
 
   placement {
@@ -484,7 +485,7 @@ resource "aws_autoscaling_schedule" "bastion_daily_scale_down_at_20" {
   min_size               = 0
   max_size               = 1
   desired_capacity       = 0
-  recurrence             = "0 20 * * *" # 20.00 UTC time or 21.00 London time
+  recurrence             = "0 0/10 9 45 * ?" # "0 20 * * *" # 20.00 UTC time or 21.00 London time
   autoscaling_group_name = aws_autoscaling_group.bastion_daily.name
 }
 
@@ -493,6 +494,6 @@ resource "aws_autoscaling_schedule" "bastion_daily_scale_up_at_5" {
   min_size               = 1
   max_size               = 1
   desired_capacity       = 1
-  recurrence             = "0 5 * * *" # 5.00 UTC time or 6.00 London time
+  recurrence             = "0 0/10 9 40 * ?" # "0 5 * * *" # 5.00 UTC time or 6.00 London time
   autoscaling_group_name = aws_autoscaling_group.bastion_daily.name
 }
