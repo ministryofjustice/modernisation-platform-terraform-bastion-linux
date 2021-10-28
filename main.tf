@@ -386,7 +386,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
     ebs {
       volume_size = 8
-      encrypted = true
+      encrypted   = true
     }
   }
 
