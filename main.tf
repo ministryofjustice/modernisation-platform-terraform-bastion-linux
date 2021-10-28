@@ -378,22 +378,27 @@ data "aws_ami" "linux_2_image" {
   }
 }
 
-resource "aws_instance" "bastion_linux" {
-  instance_type = "t3.micro"
+resource "aws_launch_template" "bastion_linux_template" {
+  name = "bastion_linux_template"
 
-  ami                         = data.aws_ami.linux_2_image.id
-  associate_public_ip_address = false
-  iam_instance_profile        = aws_iam_instance_profile.bastion_profile.id
-  ebs_optimized               = true
-  monitoring                  = true
-  vpc_security_group_ids      = [aws_security_group.bastion_linux.id]
-  subnet_id                   = data.aws_subnet.private_az_a.id
+  block_device_mappings {
+    device_name = "/dev/xvda"
 
-  root_block_device {
-    encrypted = true
+    ebs {
+      volume_size = 8
+      encrypted   = true
+    }
   }
 
-  user_data = base64encode(data.template_file.user_data.rendered)
+  ebs_optimized = true
+
+  iam_instance_profile {
+    name = aws_iam_instance_profile.bastion_profile.id
+  }
+
+  image_id                             = data.aws_ami.linux_2_image.id
+  instance_initiated_shutdown_behavior = "terminate"
+  instance_type                        = "t3.micro"
 
   metadata_options {
     http_endpoint               = "enabled" # defaults to enabled but is required if http_tokens is specified
@@ -401,10 +406,70 @@ resource "aws_instance" "bastion_linux" {
     http_tokens                 = "required"
   }
 
+  monitoring {
+    enabled = true
+  }
+
+  network_interfaces {
+    associate_public_ip_address = false
+    security_groups             = [aws_security_group.bastion_linux.id]
+    subnet_id                   = data.aws_subnet.private_az_a.id
+    delete_on_termination       = true
+  }
+
+  placement {
+    availability_zone = "${var.region}a"
+  }
+
+  tag_specifications {
+    resource_type = "instance"
+
+    tags = merge(
+      var.tags_common,
+      {
+        Name = "bastion_linux"
+      }
+    )
+  }
+
+  user_data = base64encode(data.template_file.user_data.rendered)
+}
+
+resource "aws_autoscaling_group" "bastion_linux_daily" {
+  launch_template {
+    id      = aws_launch_template.bastion_linux_template.id
+    version = "$Latest"
+  }
+  availability_zones        = ["${var.region}a"]
+  name                      = "bastion_linux_daily"
+  max_size                  = 1
+  min_size                  = 1
+  health_check_grace_period = 300
+  health_check_type         = "ELB"
+  force_delete              = true
+  termination_policies      = ["OldestInstance"]
   tags = merge(
     var.tags_common,
     {
       Name = "bastion_linux"
     }
   )
+}
+
+resource "aws_autoscaling_schedule" "bastion_linux_scale_down" {
+  scheduled_action_name  = "bastion_linux_scale_down"
+  min_size               = 0
+  max_size               = 0
+  desired_capacity       = 0
+  recurrence             = "0 20 * * *" # 20.00 UTC time or 21.00 London time
+  autoscaling_group_name = aws_autoscaling_group.bastion_linux_daily.name
+}
+
+resource "aws_autoscaling_schedule" "bastion_linux_scale_up" {
+  scheduled_action_name  = "bastion_linux_scale_up"
+  min_size               = 1
+  max_size               = 1
+  desired_capacity       = 1
+  recurrence             = "0 5 * * *" # 5.00 UTC time or 6.00 London time
+  autoscaling_group_name = aws_autoscaling_group.bastion_linux_daily.name
 }
