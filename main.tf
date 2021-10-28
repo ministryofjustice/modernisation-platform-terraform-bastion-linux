@@ -449,10 +449,10 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
   force_delete              = true
   termination_policies      = ["OldestInstance"]
   tags = merge(
-  var.tags_common,
-  {
-    Name = "bastion_linux"
-  }
+    var.tags_common,
+    {
+      Name = "bastion_linux"
+    }
   )
 }
 
