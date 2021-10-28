@@ -442,7 +442,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
   network_interfaces {
     associate_public_ip_address = false
-    subnet_id              = data.aws_subnet.private_az_a.id
+    subnet_id                   = data.aws_subnet.private_az_a.id
   }
 
   placement {
