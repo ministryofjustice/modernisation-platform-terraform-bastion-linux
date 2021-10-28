@@ -465,13 +465,13 @@ resource "aws_launch_template" "bastion_linux_template" {
   user_data = base64encode(data.template_file.user_data.rendered)
 }
 
-resource "aws_autoscaling_group" "bastion_daily" {
+resource "aws_autoscaling_group" "bastion_linux_daily" {
   launch_template {
     id      = aws_launch_template.bastion_linux_template.id
     version = "$Latest"
   }
   availability_zones        = ["${var.region}a"]
-  name                      = "bastion_daily"
+  name                      = "bastion_linux_daily"
   max_size                  = 1
   min_size                  = 1
   health_check_grace_period = 300
@@ -480,20 +480,20 @@ resource "aws_autoscaling_group" "bastion_daily" {
   termination_policies      = ["OldestInstance"]
 }
 
-resource "aws_autoscaling_schedule" "bastion_daily_scale_down_at_20" {
-  scheduled_action_name  = "bastion_daily_scale_down_at_20"
+resource "aws_autoscaling_schedule" "bastion_linux_scale_down" {
+  scheduled_action_name  = "bastion_linux_scale_down"
   min_size               = 0
-  max_size               = 1
+  max_size               = 0
   desired_capacity       = 0
-  recurrence             = "0 0/10 9 45 * ?" # "0 20 * * *" # 20.00 UTC time or 21.00 London time
-  autoscaling_group_name = aws_autoscaling_group.bastion_daily.name
+  recurrence             = "0/10 8-19 ? * ? *" # "0 20 * * *" # 20.00 UTC time or 21.00 London time
+  autoscaling_group_name = aws_autoscaling_group.bastion_linux_daily.name
 }
 
-resource "aws_autoscaling_schedule" "bastion_daily_scale_up_at_5" {
-  scheduled_action_name  = "bastion_daily_scale_up_at_7"
+resource "aws_autoscaling_schedule" "bastion_linux_scale_up" {
+  scheduled_action_name  = "bastion_linux_scale_up"
   min_size               = 1
   max_size               = 1
   desired_capacity       = 1
-  recurrence             = "0 0/10 9 40 * ?" # "0 5 * * *" # 5.00 UTC time or 6.00 London time
-  autoscaling_group_name = aws_autoscaling_group.bastion_daily.name
+  recurrence             = "0/6 8-19 ? * ? *" # "0 5 * * *" # 5.00 UTC time or 6.00 London time
+  autoscaling_group_name = aws_autoscaling_group.bastion_linux_daily.name
 }
