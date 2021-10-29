@@ -426,9 +426,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
     tags = merge(
       var.tags_common,
-      {
-        Name = "bastion_linux"
-      }
+      { Name = "bastion_linux" },
     )
   }
 
