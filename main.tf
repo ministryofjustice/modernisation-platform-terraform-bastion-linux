@@ -425,10 +425,10 @@ resource "aws_launch_template" "bastion_linux_template" {
     resource_type = "instance"
 
     tags = merge(
-    var.tags_common,
-    {
-      Name = "bastion_linux"
-    }
+      var.tags_common,
+      {
+        Name = "bastion_linux"
+      }
     )
   }
 
