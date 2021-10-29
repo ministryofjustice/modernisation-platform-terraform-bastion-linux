@@ -451,7 +451,7 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
 
   tag {
     key                 = "Name"
-    value               = "${var.app_name}-cluster-scaling-group"
+    value               = "bastion_linux_autoscaling_group"
     propagate_at_launch = true
   }
 
