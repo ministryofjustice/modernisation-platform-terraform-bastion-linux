@@ -6,5 +6,5 @@ data "aws_instances" "ecs_instances_meta" {
 
 output "bastion_private_ip" {
   description = "Private IP of bastion"
-  value       = data.aws_instances.ecs_instances_meta.private_ips
+  value       = data.aws_instances.ecs_instances_meta.private_ips[0]
 }
