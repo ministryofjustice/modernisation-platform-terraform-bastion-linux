@@ -175,3 +175,10 @@ rm ~/mycron
 #######################################
 
 ${extra_user_data_content}
+
+##########################################################
+## Add bastion version info to /etc/bastion_version.txt ##
+##########################################################
+cat > /etc/bastion_version.txt << 'EOF'
+bastion_version="2.0.2"
+EOF

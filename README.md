@@ -36,7 +36,7 @@ locals {
 }
 
 module "bastion_linux" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux?ref=v2.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux?ref=v2.0.2"
 
   providers = {
     aws.share-host   = aws.core-vpc            # core-vpc-(environment) holds the networking for all accounts
@@ -156,7 +156,7 @@ module "bastion_linux" {
 
 | Name | Description |
 |------|-------------|
-| <a name="output_bastion_private_ip"></a> [bastion\_private\_ip](#output\_bastion\_private\_ip) | Private IP of bastion |
+| <a name="output_bastion_security_group"></a> [bastion\_security\_group](#output\_bastion\_security\_group) | Security group of bastion |
 
 <!--- END_TF_DOCS --->
 
