@@ -77,11 +77,11 @@ variable "bucket_force_destroy" {
 
 #### Logs
 variable "log_auto_clean" {
-  type        = bool
+  type        = string
   description = "Enable or not the lifecycle"
   validation {
-    condition     = (var.log_auto_clean == true || var.log_auto_clean == false)
-    error_message = "Variable log_auto_clean must be boolean."
+    condition     = (var.log_auto_clean == "Enabled" || var.log_auto_clean == "Disabled")
+    error_message = "Variable log_auto_clean must be string of either \"Enabled\" or \"Disabled\"."
   }
 }
 
