@@ -6,12 +6,15 @@ data "aws_vpc" "shared_vpc" {
   }
 }
 
-data "aws_subnet_ids" "local_account" {
-  vpc_id = data.aws_vpc.shared_vpc.id
+data "aws_subnets" "local_account" {
+  filter {
+    name   = "vpc-id"
+    values = [data.aws_vpc.shared_vpc.id]
+  }
 }
 
 data "aws_subnet" "local_account" {
-  for_each = data.aws_subnet_ids.local_account.ids
+  for_each = toset(data.aws_subnets.local_account.ids)
   id       = each.value
 }
 
@@ -77,7 +80,7 @@ resource "random_string" "random6" {
 }
 
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v5.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.0.2"
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.

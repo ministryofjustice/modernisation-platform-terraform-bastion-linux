@@ -10,3 +10,8 @@ tmp/
 *.iws
 out/
 .idea_modules/
+
+## Terraform
+.terraform
+.terraform/*
+.terraform.lock.hcl
