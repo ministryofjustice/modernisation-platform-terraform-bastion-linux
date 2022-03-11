@@ -140,7 +140,7 @@ module "s3-bucket" {
   )
 }
 
-resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
+resource "aws_s3_object" "bucket_public_keys_readme" {
   bucket = module.s3-bucket.bucket.id
 
   key        = "public-keys/README.txt"
@@ -156,7 +156,7 @@ resource "aws_s3_bucket_object" "bucket_public_keys_readme" {
 
 }
 
-resource "aws_s3_bucket_object" "user_public_keys" {
+resource "aws_s3_object" "user_public_keys" {
   for_each = var.public_key_data
 
   bucket     = module.s3-bucket.bucket.id
