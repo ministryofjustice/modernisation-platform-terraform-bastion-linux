@@ -195,7 +195,7 @@ resource "aws_security_group_rule" "basion_linux_egress_1" {
   from_port   = "80"
   to_port     = "80"
   protocol    = "TCP"
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:aws-vpc-no-public-egress-sgr
 }
 
 resource "aws_security_group_rule" "basion_linux_egress_2" {
@@ -206,7 +206,7 @@ resource "aws_security_group_rule" "basion_linux_egress_2" {
   from_port   = "443"
   to_port     = "443"
   protocol    = "TCP"
-  cidr_blocks = ["0.0.0.0/0"]
+  cidr_blocks = ["0.0.0.0/0"] #tfsec:ignore:aws-vpc-no-public-egress-sgr
 }
 
 resource "aws_security_group_rule" "basion_linux_egress_3" {
@@ -269,6 +269,8 @@ resource "aws_iam_role" "bastion_role" {
   )
 }
 
+#wildcards permissible for access to log bucket objects
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "bastion_policy_document" {
 
   statement {
@@ -328,6 +330,8 @@ resource "aws_iam_role_policy_attachment" "bastion_managed" {
   role       = aws_iam_role.bastion_role.name
 }
 
+#wildcards permissible read access to specific buckets
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "bastion_ssm_s3_policy_document" {
 
   statement {
