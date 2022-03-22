@@ -190,28 +190,6 @@ resource "aws_security_group" "bastion_linux" {
 resource "aws_security_group_rule" "basion_linux_egress_1" {
   security_group_id = aws_security_group.bastion_linux.id
 
-  description = "bastion_linux_egress_of_HTTP_to_0.0.0.0/0"
-  type        = "egress"
-  from_port   = "80"
-  to_port     = "80"
-  protocol    = "TCP"
-  cidr_blocks = ["0.0.0.0/0"]
-}
-
-resource "aws_security_group_rule" "basion_linux_egress_2" {
-  security_group_id = aws_security_group.bastion_linux.id
-
-  description = "bastion_linux_egress_of_HTTPS_to_0.0.0.0/0"
-  type        = "egress"
-  from_port   = "443"
-  to_port     = "443"
-  protocol    = "TCP"
-  cidr_blocks = ["0.0.0.0/0"]
-}
-
-resource "aws_security_group_rule" "basion_linux_egress_3" {
-  security_group_id = aws_security_group.bastion_linux.id
-
   description = "bastion_linux_to_local_subnet_CIDRs"
   type        = "egress"
   from_port   = "0"
@@ -220,7 +198,7 @@ resource "aws_security_group_rule" "basion_linux_egress_3" {
   cidr_blocks = [for s in data.aws_subnet.local_account : s.cidr_block]
 }
 
-resource "aws_security_group_rule" "basion_linux_egress_4" {
+resource "aws_security_group_rule" "basion_linux_egress_2" {
   security_group_id = aws_security_group.bastion_linux.id
 
   description              = "bastion_linux_egress_to_inteface_endpoints"
@@ -231,7 +209,7 @@ resource "aws_security_group_rule" "basion_linux_egress_4" {
   source_security_group_id = data.aws_security_group.core_vpc_protected.id
 }
 
-resource "aws_security_group_rule" "bastion_linux_egress_5" {
+resource "aws_security_group_rule" "bastion_linux_egress_3" {
   security_group_id = aws_security_group.bastion_linux.id
 
   description     = "bastion_linux_egress_to_s3_endpoint"
@@ -269,6 +247,8 @@ resource "aws_iam_role" "bastion_role" {
   )
 }
 
+#wildcards permissible for access to log bucket objects
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "bastion_policy_document" {
 
   statement {
@@ -328,6 +308,8 @@ resource "aws_iam_role_policy_attachment" "bastion_managed" {
   role       = aws_iam_role.bastion_role.name
 }
 
+#wildcards permissible read access to specific buckets
+#tfsec:ignore:aws-iam-no-policy-wildcards
 data "aws_iam_policy_document" "bastion_ssm_s3_policy_document" {
 
   statement {
@@ -415,6 +397,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
   network_interfaces {
     associate_public_ip_address = false
+    device_index                = "0"
     security_groups             = [aws_security_group.bastion_linux.id]
     subnet_id                   = data.aws_subnet.private_az_a.id
     delete_on_termination       = true
