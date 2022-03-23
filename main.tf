@@ -397,7 +397,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
   network_interfaces {
     associate_public_ip_address = false
-    device_index                = "0"
+    device_index                = 0
     security_groups             = [aws_security_group.bastion_linux.id]
     subnet_id                   = data.aws_subnet.private_az_a.id
     delete_on_termination       = true
