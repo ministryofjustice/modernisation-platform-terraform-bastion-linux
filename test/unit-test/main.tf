@@ -15,14 +15,14 @@ module "bastion_linux" {
   bucket_versioning    = true
   bucket_force_destroy = true
   # public keys
-  public_key_data      = local.public_key_data.keys[local.environment]
+  public_key_data = local.public_key_data.keys[local.environment]
   # logs
   log_auto_clean       = "Enabled"
   log_standard_ia_days = 30  # days before moving to IA storage
   log_glacier_days     = 60  # days before moving to Glacier
   log_expiry_days      = 180 # days before log expiration
   # bastion
-  allow_ssh_commands   = false
+  allow_ssh_commands = false
 
   app_name      = var.networking[0].application
   business_unit = local.vpc_name
