@@ -22,5 +22,5 @@ func TestS3Creation(t *testing.T) {
 
 	bastionSecurityGroup := terraform.Output(t, terraformOptions, "bastion_security_group")
 
-	assert.Regexp(t, regexp.MustCompile(`^AWSS3BucketReplication*`), bastionSecurityGroup)
+	assert.Regexp(t, regexp.MustCompile(`^sg-*`), bastionSecurityGroup)
 }
