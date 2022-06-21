@@ -25,11 +25,7 @@ func TestS3Creation(t *testing.T) {
 	bastionS3Bucket := terraform.Output(t, terraformOptions, "bastion_s3_bucket")
 
 	assert.Regexp(t, regexp.MustCompile(`^sg-*`), bastionSecurityGroup)
-
-	assert.Regexp(t, regexp.MustCompile(`^sg-*`), bastionLaunchTemplate)
-	assert.Equal(t, "terminate", bastionLaunchTemplate)
-	assert.Equal(t, "t3.micro", bastionLaunchTemplate)
-
-	assert.Regexp(t, regexp.MustCompile(`^arn:aws:s3:::s3-bucket-*`), bastionS3Bucket)
-	assert.Regexp(t, regexp.MustCompile(`^s3-bucket-*`), bastionS3Bucket)
+	assert.Contains(t, bastionLaunchTemplate, "arn:aws:ec2:eu-west-2:")
+	assert.Contains(t, bastionLaunchTemplate, "instance_type:t3.micro")
+ 	assert.Contains(t, bastionS3Bucket, "arn:aws:s3:::bastion-testing-test-")
 }
