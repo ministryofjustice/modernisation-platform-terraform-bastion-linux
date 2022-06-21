@@ -12,9 +12,6 @@ Run the tests from within the `test` directory
 
 ```
 cd ../
-go mod init github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux
-go mod tidy
-go mod download
 aws-vault exec mod -- go test -v
 ```
 
@@ -26,6 +23,16 @@ TestS3Creation 2022-06-08T14:29:22+01:00 logger.go:66:
 --- PASS: TestS3Creation (20.60s)
 PASS
 ok      github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux        20.897s
+```
+
+## Module initialisation
+
+The following commands were used in order to generate the required `go.mod` and `go.sum` files prior to the first run of the tests.
+
+```
+go mod init github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux
+go mod tidy
+go mod download
 ```
 
 ## References
