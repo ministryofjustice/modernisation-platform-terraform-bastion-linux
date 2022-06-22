@@ -37,7 +37,7 @@ locals {
 }
 
 module "bastion_linux" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux?ref=v2.0.2"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux?ref=v3.0.4"
 
   providers = {
     aws.share-host   = aws.core-vpc            # core-vpc-(environment) holds the networking for all accounts
@@ -91,7 +91,7 @@ module "bastion_linux" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_s3-bucket"></a> [s3-bucket](#module\_s3-bucket) | github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | v6.0.3 |
+| <a name="module_s3-bucket"></a> [s3-bucket](#module\_s3-bucket) | github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | v6.1.0 |
 
 ## Resources
 
@@ -155,6 +155,8 @@ module "bastion_linux" {
 
 | Name | Description |
 |------|-------------|
+| <a name="output_bastion_launch_template"></a> [bastion\_launch\_template](#output\_bastion\_launch\_template) | Launch template of bastion |
+| <a name="output_bastion_s3_bucket"></a> [bastion\_s3\_bucket](#output\_bastion\_s3\_bucket) | S3 bucket of bastion |
 | <a name="output_bastion_security_group"></a> [bastion\_security\_group](#output\_bastion\_security\_group) | Security group of bastion |
 
 <!--- END_TF_DOCS --->

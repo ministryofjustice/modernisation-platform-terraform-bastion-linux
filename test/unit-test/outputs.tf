@@ -1,14 +1,14 @@
 output "bastion_security_group" {
+  value       = module.bastion_linux.bastion_security_group
   description = "Security group of bastion"
-  value       = aws_security_group.bastion_linux.id
 }
 
 output "bastion_launch_template" {
   description = "Launch template of bastion"
-  value       = aws_launch_template.bastion_linux_template
+  value       = module.bastion_linux.bastion_launch_template
 }
 
 output "bastion_s3_bucket" {
   description = "S3 bucket of bastion"
-  value       = module.s3-bucket
+  value       = module.bastion_linux.bastion_s3_bucket
 }
