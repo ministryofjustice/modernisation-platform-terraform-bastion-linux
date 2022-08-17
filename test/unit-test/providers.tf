@@ -6,9 +6,9 @@ provider "aws" {
   }
 }
 
-# AWS provider for the Modernisation Platform, to get things from there if required
+# AWS provider for the testing-ci user (testing-test account), to get things from there if required
 provider "aws" {
-  alias                  = "modernisation-platform"
+  alias                  = "testing-ci-user"
   region                 = "eu-west-2"
   skip_get_ec2_platforms = true
 }
