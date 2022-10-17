@@ -90,6 +90,7 @@ module "s3-bucket" {
   }
   bucket_name         = "${var.bucket_name}-${var.tags_prefix}-${lower(random_string.random6.result)}"
   replication_enabled = false
+  force_destroy = true
 
   lifecycle_rule = [
     {
