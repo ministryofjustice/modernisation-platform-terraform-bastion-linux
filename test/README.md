@@ -1,17 +1,8 @@
 # How to run the tests
 
-Initialise terraform workspace within the `test/unit-test` directory
-
-```
-cd test/unit-test
-aws-vault exec mod -- terraform init
-aws-vault exec mod -- terraform workspace select testing-test
-```
-
 Run the tests from within the `test` directory
 
 ```
-cd ../
 aws-vault exec mod -- go test -v
 ```
 
