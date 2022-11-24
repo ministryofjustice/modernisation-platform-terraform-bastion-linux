@@ -6,11 +6,11 @@ terraform {
       configuration_aliases = [aws.share-host, aws.share-tenant]
     }
     template = {
-      source = "hashicorp/template"
+      source  = "hashicorp/template"
       version = "~> 2.2"
     }
     random = {
-      source = "hashicorp/random"
+      source  = "hashicorp/random"
       version = "~> 3.4"
     }
   }

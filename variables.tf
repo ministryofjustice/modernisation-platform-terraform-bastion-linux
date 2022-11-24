@@ -30,7 +30,7 @@ variable "environment" {
 
 ##Bastion
 variable "public_key_data" {
-  type = map(any)
+  type        = map(any)
   description = "User public keys for specific environment"
 }
 
