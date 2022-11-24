@@ -187,6 +187,8 @@ In order to prevent older versions from being retained forever, in addition to t
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.1 |
 | <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 4.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.4 |
+| <a name="requirement_template"></a> [template](#requirement\_template) | ~> 2.2 |
 
 ## Providers
 
@@ -194,8 +196,8 @@ In order to prevent older versions from being retained forever, in addition to t
 |------|---------|
 | <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
 | <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | ~> 4.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | n/a |
-| <a name="provider_template"></a> [template](#provider\_template) | n/a |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.4 |
+| <a name="provider_template"></a> [template](#provider\_template) | ~> 2.2 |
 
 ## Modules
 
@@ -255,7 +257,7 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="input_log_expiry_days"></a> [log\_expiry\_days](#input\_log\_expiry\_days) | Number of days before logs expiration | `number` | n/a | yes |
 | <a name="input_log_glacier_days"></a> [log\_glacier\_days](#input\_log\_glacier\_days) | Number of days before moving logs to Glacier | `number` | n/a | yes |
 | <a name="input_log_standard_ia_days"></a> [log\_standard\_ia\_days](#input\_log\_standard\_ia\_days) | Number of days before moving logs to IA Storage | `number` | n/a | yes |
-| <a name="input_public_key_data"></a> [public\_key\_data](#input\_public\_key\_data) | User public keys for specific environment | `any` | n/a | yes |
+| <a name="input_public_key_data"></a> [public\_key\_data](#input\_public\_key\_data) | User public keys for specific environment | `map(any)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | #Main | `string` | n/a | yes |
 | <a name="input_subnet_set"></a> [subnet\_set](#input\_subnet\_set) | Fixed variable to specify subnet-set for RAM shared subnets | `string` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | MOJ required tags | `map(string)` | n/a | yes |
