@@ -18,11 +18,6 @@ jobs:
         with:
           terraform_version: 1.0.1
           terraform_wrapper: false
-      - name: set terraform workspace
-        run: |
-          #CONFIGURE TERRAFORM AND WORKSPACE
-          terraform -chdir="test/unit-test" init 
-          terraform -chdir="test/unit-test" workspace select testing-test
       - name: Download Go Modules
         working-directory: test
         run: go mod download

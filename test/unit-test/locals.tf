@@ -22,17 +22,17 @@ locals {
 
   # Merge tags from the environment json file with additional ones
   tags = merge(
-    jsondecode(data.http.environments_file.body).tags,
+    jsondecode(data.http.environments_file.response_body).tags,
     { "is-production" = local.is-production },
     { "environment-name" = terraform.workspace },
     { "source-code" = "https://github.com/ministryofjustice/modernisation-platform" }
   )
 
-  environment = trimprefix(terraform.workspace, "${var.networking[0].application}-")
+  environment = trimprefix("testing-test", "${var.networking[0].application}-")
   vpc_name    = var.networking[0].business-unit
   subnet_set  = var.networking[0].set
 
-  is_live       = [substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
+  is_live       = [substr("testing-test", length(local.application_name), length(terraform.workspace)) == "-production" || substr(terraform.workspace, length(local.application_name), length(terraform.workspace)) == "-preproduction" ? "live" : "non-live"]
   provider_name = "core-vpc-${local.environment}"
 
 }
