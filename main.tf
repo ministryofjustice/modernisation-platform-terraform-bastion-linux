@@ -272,7 +272,7 @@ data "aws_iam_policy_document" "bastion_policy_document" {
     actions = [
       "s3:ListBucket"
     ]
-    resources = ["${module.s3-bucket.bucket.arn}"]
+    resources = [module.s3-bucket.bucket.arn]
 
     condition {
       test = "ForAnyValue:StringEquals"

@@ -30,10 +30,12 @@ variable "environment" {
 
 ##Bastion
 variable "public_key_data" {
+  type = map(any)
   description = "User public keys for specific environment"
 }
 
 variable "extra_user_data_content" {
+  type        = string
   default     = ""
   description = "Extra user data content for Bastion ec2"
 }
