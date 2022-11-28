@@ -31,7 +31,7 @@ jobs:
       with:
         scan_type: single
         tfsec_exclude: AWS089, AWS099, AWS009, AWS007, AWS002
-          checkov_exclude: CKV_AWS_144,CKV_AWS_18
+        checkov_exclude: CKV_AWS_144,CKV_AWS_18
 
   terraform-static-analysis-full-scan:
     permissions:
@@ -51,4 +51,4 @@ jobs:
       with:
         scan_type: full
         tfsec_exclude: AWS089, AWS099, AWS009, AWS007, AWS002
-          checkov_exclude: CKV_AWS_144,CKV_AWS_18
+        checkov_exclude: CKV_AWS_144,CKV_AWS_18
