@@ -46,10 +46,13 @@ data "aws_vpc_endpoint" "s3" {
 
 }
 
-data "template_file" "user_data" {
-  template = file("${path.module}/user_data.sh")
+module "template_files" {
+  source = "hashicorp/dir/template/"
+  version = "1.0.2"
 
-  vars = {
+  base_dir = "${path.module}/templates"
+  template_vars = {
+    # Pass in any values that you wish to use in your templates.
     aws_region              = var.region
     bucket_name             = module.s3-bucket.bucket.id
     extra_user_data_content = var.extra_user_data_content
@@ -419,7 +422,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     )
   }
 
-  user_data = base64encode(data.template_file.user_data.rendered)
+  user_data = base64encode(module.template_files.files["user_data.sh"].content)
 }
 
 resource "aws_autoscaling_group" "bastion_linux_daily" {
