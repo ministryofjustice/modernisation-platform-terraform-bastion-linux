@@ -102,9 +102,9 @@ In order to prevent older versions from being retained forever, in addition to t
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.45.0 |
-| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | 4.45.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.4.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
+| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | ~> 4.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.4 |
 
 ## Modules
 
@@ -177,5 +177,4 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="output_bastion_launch_template"></a> [bastion\_launch\_template](#output\_bastion\_launch\_template) | Launch template of bastion |
 | <a name="output_bastion_s3_bucket"></a> [bastion\_s3\_bucket](#output\_bastion\_s3\_bucket) | S3 bucket of bastion |
 | <a name="output_bastion_security_group"></a> [bastion\_security\_group](#output\_bastion\_security\_group) | Security group of bastion |
-| <a name="output_template_key"></a> [template\_key](#output\_template\_key) | n/a |
 <!-- END_TF_DOCS -->
