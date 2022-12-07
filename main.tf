@@ -47,7 +47,7 @@ data "aws_vpc_endpoint" "s3" {
 }
 
 module "template_files" {
-  source = "hashicorp/dir/template/"
+  source = "hashicorp/dir/template"
   version = "1.0.2"
 
   base_dir = "${path.module}/templates"
