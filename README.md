@@ -103,9 +103,9 @@ In order to prevent older versions from being retained forever, in addition to t
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | 4.45.0 |
-| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | 4.45.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.4.3 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 4.0 |
+| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | ~> 4.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | ~> 3.4 |
 
 ## Modules
 
