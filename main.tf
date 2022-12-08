@@ -410,7 +410,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
   user_data = base64encode(
     templatefile(
-      "${path.module}/templates/user_data.sh.tmpl",
+      "${path.module}/templates/user_data.sh.tftpl",
       {
         aws_region              = var.region
         bucket_name             = module.s3-bucket.bucket.id
