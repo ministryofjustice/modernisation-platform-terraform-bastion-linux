@@ -46,20 +46,6 @@ data "aws_vpc_endpoint" "s3" {
 
 }
 
-module "template_files" {
-  source  = "hashicorp/dir/template"
-  version = "1.0.2"
-
-  base_dir = "${path.module}/templates"
-  template_vars = {
-    # Pass in any values that you wish to use in your templates.
-    aws_region              = var.region
-    bucket_name             = module.s3-bucket.bucket.id
-    extra_user_data_content = var.extra_user_data_content
-    allow_ssh_commands      = var.allow_ssh_commands
-  }
-}
-
 # S3
 resource "aws_kms_key" "bastion_s3" {
   enable_key_rotation = true
@@ -422,7 +408,17 @@ resource "aws_launch_template" "bastion_linux_template" {
     )
   }
 
-  user_data = base64encode(module.template_files.files["user_data.sh"].content)
+  user_data = base64encode(
+    templatefile(
+      "${path.module}/templates/user_data.sh.tftpl",
+      {
+        aws_region              = var.region
+        bucket_name             = module.s3-bucket.bucket.id
+        extra_user_data_content = var.extra_user_data_content
+        allow_ssh_commands      = var.allow_ssh_commands
+      }
+    )
+  )
 }
 
 resource "aws_autoscaling_group" "bastion_linux_daily" {

@@ -112,7 +112,6 @@ In order to prevent older versions from being retained forever, in addition to t
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_s3-bucket"></a> [s3-bucket](#module\_s3-bucket) | github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | v6.2.0 |
-| <a name="module_template_files"></a> [template\_files](#module\_template\_files) | hashicorp/dir/template | 1.0.2 |
 
 ## Resources
 
