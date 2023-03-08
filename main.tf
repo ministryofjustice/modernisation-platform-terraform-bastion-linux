@@ -69,7 +69,7 @@ resource "random_string" "random6" {
 }
 
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.2.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v6.3.0"
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.
