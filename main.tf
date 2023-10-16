@@ -69,7 +69,7 @@ resource "random_string" "random6" {
 }
 
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.0.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1"
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.
@@ -177,7 +177,7 @@ resource "aws_security_group" "bastion_linux" {
   )
 }
 
-resource "aws_security_group_rule" "basion_linux_egress_1" {
+resource "aws_security_group_rule" "bastion_linux_egress_1" {
   security_group_id = aws_security_group.bastion_linux.id
 
   description = "bastion_linux_to_local_subnet_CIDRs"
@@ -188,10 +188,10 @@ resource "aws_security_group_rule" "basion_linux_egress_1" {
   cidr_blocks = [for s in data.aws_subnet.local_account : s.cidr_block]
 }
 
-resource "aws_security_group_rule" "basion_linux_egress_2" {
+resource "aws_security_group_rule" "bastion_linux_egress_2" {
   security_group_id = aws_security_group.bastion_linux.id
 
-  description              = "bastion_linux_egress_to_inteface_endpoints"
+  description              = "bastion_linux_egress_to_interface_endpoints"
   type                     = "egress"
   from_port                = "443"
   to_port                  = "443"
