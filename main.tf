@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 # get shared subnet-set vpc object
 data "aws_vpc" "shared_vpc" {
   # provider = aws.share-host
@@ -61,6 +63,37 @@ resource "aws_kms_key" "bastion_s3" {
 resource "aws_kms_alias" "bastion_s3_alias" {
   name          = "alias/s3-${var.bucket_name}_key"
   target_key_id = aws_kms_key.bastion_s3.arn
+}
+
+resource "aws_kms_key_policy" "bastion_s3" {
+  key_id = aws_kms_key.bastion_s3.id
+  policy = jsonencode({
+    Id = "bastion-key-access"
+    Statement = [
+      {
+        "Sid" : "Enable IAM User Permissions",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        "Action" : "kms:*",
+        "Resource" : aws_kms_key.bastion_s3.arn
+      },
+      {
+        Action = [
+          "kms:Decrypt",
+          "kms:GenerateDataKey"
+        ]
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/bastion_linux_ec2_role"
+        }
+
+        Resource = aws_kms_key.bastion_s3.arn
+      },
+    ]
+    Version = "2012-10-17"
+  })
 }
 
 resource "random_string" "random6" {
