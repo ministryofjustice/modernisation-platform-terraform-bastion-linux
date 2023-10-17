@@ -102,7 +102,7 @@ resource "random_string" "random6" {
 }
 
 module "s3-bucket" {
-   #checkov:skip=CKV2_AWS_64: "Ensure KMS key Policy is defined - not needed here"
+  #checkov:skip=CKV2_AWS_64: "Ensure KMS key Policy is defined - not needed here"
   source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=568694e50e03630d99cb569eafa06a0b879a1239"
 
   providers = {
