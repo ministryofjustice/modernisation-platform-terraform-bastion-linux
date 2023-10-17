@@ -110,7 +110,7 @@ In order to prevent older versions from being retained forever, in addition to t
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_s3-bucket"></a> [s3-bucket](#module\_s3-bucket) | github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | 8688bc15a08fbf5a4f4eef9b7433c5a417df8df1 |
+| <a name="module_s3-bucket"></a> [s3-bucket](#module\_s3-bucket) | github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | 568694e50e03630d99cb569eafa06a0b879a1239 |
 
 ## Resources
 
