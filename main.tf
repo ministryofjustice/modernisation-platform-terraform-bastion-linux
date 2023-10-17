@@ -102,7 +102,8 @@ resource "random_string" "random6" {
 }
 
 module "s3-bucket" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=8688bc15a08fbf5a4f4eef9b7433c5a417df8df1"
+  #checkov:skip=CKV2_AWS_64: "Ensure KMS key Policy is defined - not needed here"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=568694e50e03630d99cb569eafa06a0b879a1239"
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.
