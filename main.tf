@@ -1,3 +1,5 @@
+data "aws_caller_identity" "current" {}
+
 # get shared subnet-set vpc object
 data "aws_vpc" "shared_vpc" {
   # provider = aws.share-host
@@ -63,6 +65,37 @@ resource "aws_kms_alias" "bastion_s3_alias" {
   target_key_id = aws_kms_key.bastion_s3.arn
 }
 
+resource "aws_kms_key_policy" "bastion_s3" {
+  key_id = aws_kms_key.bastion_s3.id
+  policy = jsonencode({
+    Id = "bastion-key-access"
+    Statement = [
+      {
+        "Sid" : "Enable IAM User Permissions",
+        "Effect" : "Allow",
+        "Principal" : {
+          "AWS" : "arn:aws:iam::${data.aws_caller_identity.current.account_id}:root"
+        },
+        "Action" : "kms:*",
+        "Resource" : aws_kms_key.bastion_s3.arn
+      },
+      {
+        Action = [
+          "kms:Decrypt",
+          "kms:GenerateDataKey"
+        ]
+        Effect = "Allow"
+        Principal = {
+          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/bastion_linux_ec2_role"
+        }
+
+        Resource = aws_kms_key.bastion_s3.arn
+      },
+    ]
+    Version = "2012-10-17"
+  })
+}
+
 resource "random_string" "random6" {
   length  = 6
   special = false
@@ -70,7 +103,7 @@ resource "random_string" "random6" {
 
 module "s3-bucket" {
    #checkov:skip=CKV2_AWS_64: "Ensure KMS key Policy is defined - not needed here"
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=v7.1.0"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=568694e50e03630d99cb569eafa06a0b879a1239"
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.
@@ -178,7 +211,7 @@ resource "aws_security_group" "bastion_linux" {
   )
 }
 
-resource "aws_security_group_rule" "basion_linux_egress_1" {
+resource "aws_security_group_rule" "bastion_linux_egress_1" {
   security_group_id = aws_security_group.bastion_linux.id
 
   description = "bastion_linux_to_local_subnet_CIDRs"
@@ -189,10 +222,10 @@ resource "aws_security_group_rule" "basion_linux_egress_1" {
   cidr_blocks = [for s in data.aws_subnet.local_account : s.cidr_block]
 }
 
-resource "aws_security_group_rule" "basion_linux_egress_2" {
+resource "aws_security_group_rule" "bastion_linux_egress_2" {
   security_group_id = aws_security_group.bastion_linux.id
 
-  description              = "bastion_linux_egress_to_inteface_endpoints"
+  description              = "bastion_linux_egress_to_interface_endpoints"
   type                     = "egress"
   from_port                = "443"
   to_port                  = "443"
