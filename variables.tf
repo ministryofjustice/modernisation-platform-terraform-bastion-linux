@@ -119,8 +119,11 @@ variable "scale_down_cron" {
   default     = "0 20 * * *" # 20.00 UTC time or 21.00 London time
 }
 
-variable "scale_up_cron" {
-  description = "Cron expression for scale up"
-  type        = string
-  default     = "0 5 * * *" # 5.00 UTC time or 6.00 London time
+variable "autoscaling_cron" {
+  description = "Cron expressions for scale up and scale down"
+  type        = map(string)
+  default = {
+    "up"   = "0 5 * * *"  # 5.00 UTC or 6.00 BST
+    "down" = "0 20 * * *" # 20.00 UTC or 21.00 BST
+  }
 }
