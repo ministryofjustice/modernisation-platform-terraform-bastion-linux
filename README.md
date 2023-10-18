@@ -155,6 +155,7 @@ In order to prevent older versions from being retained forever, in addition to t
 |------|-------------|------|---------|:--------:|
 | <a name="input_allow_ssh_commands"></a> [allow\_ssh\_commands](#input\_allow\_ssh\_commands) | Allow SSH commands to be specified | `bool` | n/a | yes |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of application | `string` | n/a | yes |
+| <a name="input_autoscaling_cron"></a> [autoscaling\_cron](#input\_autoscaling\_cron) | Cron expressions for scale up and scale down | `map(string)` | <pre>{<br>  "down": "0 20 * * *",<br>  "up": "0 5 * * *"<br>}</pre> | no |
 | <a name="input_bucket_force_destroy"></a> [bucket\_force\_destroy](#input\_bucket\_force\_destroy) | The bucket and all objects should be destroyed when using true | `bool` | n/a | yes |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Bucket used for bucket log storage and user public keys | `string` | n/a | yes |
 | <a name="input_bucket_versioning"></a> [bucket\_versioning](#input\_bucket\_versioning) | Enable bucket versioning or not | `bool` | n/a | yes |
@@ -168,7 +169,6 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="input_public_key_data"></a> [public\_key\_data](#input\_public\_key\_data) | User public keys for specific environment | `map(any)` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | #Main | `string` | n/a | yes |
 | <a name="input_scale_down_cron"></a> [scale\_down\_cron](#input\_scale\_down\_cron) | Cron expression for scale down | `string` | `"0 20 * * *"` | no |
-| <a name="input_scale_up_cron"></a> [scale\_up\_cron](#input\_scale\_up\_cron) | Cron expression for scale up | `string` | `"0 5 * * *"` | no |
 | <a name="input_subnet_set"></a> [subnet\_set](#input\_subnet\_set) | Fixed variable to specify subnet-set for RAM shared subnets | `string` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | MOJ required tags | `map(string)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | prefix for name tags | `string` | n/a | yes |
