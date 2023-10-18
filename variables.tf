@@ -112,3 +112,11 @@ variable "tags_prefix" {
   description = "prefix for name tags"
   type        = string
 }
+variable "autoscaling_cron" {
+  description = "Cron expressions for scale up and scale down"
+  type        = map(string)
+  default = {
+    "up"   = "0 5 * * *"  # 5.00 UTC or 6.00 BST
+    "down" = "0 20 * * *" # 20.00 UTC or 21.00 BST
+  }
+}
