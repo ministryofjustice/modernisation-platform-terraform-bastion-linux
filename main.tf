@@ -491,7 +491,7 @@ resource "aws_autoscaling_schedule" "bastion_linux_scale_down" {
   min_size               = 0
   max_size               = 0
   desired_capacity       = 0
-  recurrence             = var.autoscaling_cron["up"]
+  recurrence             = var.autoscaling_cron["down"]
   autoscaling_group_name = aws_autoscaling_group.bastion_linux_daily.name
 }
 
@@ -500,6 +500,6 @@ resource "aws_autoscaling_schedule" "bastion_linux_scale_up" {
   min_size               = 1
   max_size               = 1
   desired_capacity       = 1
-  recurrence             = var.autoscaling_cron["down"]
+  recurrence             = var.autoscaling_cron["up"]
   autoscaling_group_name = aws_autoscaling_group.bastion_linux_daily.name
 }
