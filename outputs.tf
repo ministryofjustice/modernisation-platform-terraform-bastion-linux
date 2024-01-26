@@ -12,3 +12,9 @@ output "bastion_s3_bucket" {
   description = "S3 bucket of bastion"
   value       = module.s3-bucket
 }
+
+
+output "bastion_iam_role" {
+  description = "IAM role of bastion"
+  value       = aws_iam_role.bastion_role
+}

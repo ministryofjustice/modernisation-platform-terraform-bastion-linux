@@ -71,6 +71,11 @@ module "bastion_linux" {
 }
 ```
 
+#### Note:
+Passing in a custom KMS key? You'll need to make sure the bastion iam role has permissions to use it.
+See `aws_kms_key_policy.bastion_s3` in `main.tf` for an example.
+This module ouputs the bastion iam role object (see `outputs.tf`), so you can use it in your own policy.
+
 ## Looking for issues?
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
 
