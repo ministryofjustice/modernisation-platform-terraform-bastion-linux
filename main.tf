@@ -50,6 +50,7 @@ data "aws_vpc_endpoint" "s3" {
 
 # S3
 resource "aws_kms_key" "bastion_s3" {
+  count               = len(var.s3_kms_arn) > 1 ? 0 : 1
   enable_key_rotation = true
 
   tags = merge(
@@ -61,11 +62,15 @@ resource "aws_kms_key" "bastion_s3" {
 }
 
 resource "aws_kms_alias" "bastion_s3_alias" {
+  count = len(var.s3_kms_arn) > 1 ? 0 : 1
+
   name          = "alias/s3-${var.bucket_name}_key"
   target_key_id = aws_kms_key.bastion_s3.arn
 }
 
 resource "aws_kms_key_policy" "bastion_s3" {
+  count = len(var.s3_kms_arn) > 1 ? 0 : 1
+
   key_id = aws_kms_key.bastion_s3.id
   policy = jsonencode({
     Id = "bastion-key-access"
@@ -169,7 +174,7 @@ resource "aws_s3_object" "bucket_public_keys_readme" {
 
   key        = "public-keys/README.txt"
   content    = "Drop here the ssh public keys of the instances you want to control"
-  kms_key_id = aws_kms_key.bastion_s3.arn
+  kms_key_id = len(var.s3_kms_arn) > 1 ? var.s3_kms_arn : aws_kms_key.bastion_s3.arn
 
   tags = merge(
     var.tags_common,
@@ -186,7 +191,7 @@ resource "aws_s3_object" "user_public_keys" {
   bucket     = module.s3-bucket.bucket.id
   key        = "public-keys/${each.key}.pub"
   content    = each.value
-  kms_key_id = aws_kms_key.bastion_s3.arn
+  kms_key_id = len(var.s3_kms_arn) > 1 ? var.s3_kms_arn : aws_kms_key.bastion_s3.arn
 
   tags = merge(
     var.tags_common,
@@ -313,7 +318,7 @@ data "aws_iam_policy_document" "bastion_policy_document" {
       "kms:Encrypt",
       "kms:Decrypt"
     ]
-    resources = [aws_kms_key.bastion_s3.arn]
+    resources = [aws_kms_key.bastion_s3[0].arn]
   }
 }
 

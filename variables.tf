@@ -126,3 +126,8 @@ variable "autoscaling_cron" {
     "down" = "0 20 * * *" # 20.00 UTC or 21.00 BST
   }
 }
+
+variable "s3_kms_arn" {
+  description = "KMS ARN for S3 bucket encryption"
+  type        = string
+}
