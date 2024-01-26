@@ -86,7 +86,7 @@ resource "aws_kms_key_policy" "bastion_s3" {
         ]
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/bastion_linux_ec2_role"
+          AWS = aws_iam_instance_profile.bastion_profile.arn
         }
 
         Resource = aws_kms_key.bastion_s3.arn
