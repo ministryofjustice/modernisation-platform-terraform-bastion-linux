@@ -168,7 +168,10 @@ EOF
 crontab ~/mycron
 rm ~/mycron
 
-
+############################################
+## RUN USER SYNC IMMEDIATELY AFTER LAUNCH ##
+############################################
+/usr/bin/bastion/sync_users
 
 #########################################
 ## Add Custom extra_user_data_content ##
