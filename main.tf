@@ -120,6 +120,8 @@ module "s3-bucket" {
   replication_enabled = false
   force_destroy       = true
 
+  custom_kms_key = len(var.custom_s3_kms_arn) > 1 ? var.custom_s3_kms_arn : null
+
   lifecycle_rule = [
     {
       id      = "log"
