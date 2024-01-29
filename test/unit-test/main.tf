@@ -12,7 +12,7 @@ module "bastion_linux" {
   }
 
   # Instance name
-  name = "bastion_linux_${count.index + 1}"
+  instance_name = "bastion_linux_${count.index + 1}"
 
   # s3 - used for logs and user ssh public keys
   bucket_name          = "bastion_${count.index + 1}"
