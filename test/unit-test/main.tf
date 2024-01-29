@@ -15,7 +15,7 @@ module "bastion_linux" {
   name = "bastion_linux_${count.index + 1}"
 
   # s3 - used for logs and user ssh public keys
-  bucket_name          = "bastion"
+  bucket_name          = "bastion_${count.index + 1}"
   bucket_versioning    = true
   bucket_force_destroy = true
   # public keys
