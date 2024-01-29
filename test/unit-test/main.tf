@@ -3,12 +3,16 @@ locals {
 }
 
 module "bastion_linux" {
+  count  = 2
   source = "../../"
 
   providers = {
     aws.share-host   = aws.core-vpc # core-vpc-(environment) holds the networking for all accounts
     aws.share-tenant = aws          # The default provider (unaliased, `aws`) is the tenant
   }
+
+  # Instance name
+  name = "bastion_linux_${count.index + 1}"
 
   # s3 - used for logs and user ssh public keys
   bucket_name          = "bastion"
