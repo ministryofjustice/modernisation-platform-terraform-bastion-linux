@@ -3,6 +3,7 @@ locals {
 }
 
 module "bastion_linux" {
+  count  = 2
   source = "../../"
 
   providers = {
@@ -10,8 +11,11 @@ module "bastion_linux" {
     aws.share-tenant = aws          # The default provider (unaliased, `aws`) is the tenant
   }
 
+  # Instance name
+  instance_name = "bastion_linux_${count.index + 1}"
+
   # s3 - used for logs and user ssh public keys
-  bucket_name          = "bastion"
+  bucket_name          = "bastion-${count.index + 1}"
   bucket_versioning    = true
   bucket_force_destroy = true
   # public keys
@@ -32,5 +36,5 @@ module "bastion_linux" {
 
   # Tags
   tags_common = local.tags
-  tags_prefix = terraform.workspace
+  tags_prefix = "testing-test"
 }

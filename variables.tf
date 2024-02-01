@@ -13,6 +13,12 @@ variable "app_name" {
   }
 }
 
+variable "instance_name" {
+  type        = string
+  description = "Name of instance"
+  default     = "bastion_linux"
+}
+
 variable "business_unit" {
   type        = string
   description = "Fixed variable to specify business-unit for RAM shared subnets"

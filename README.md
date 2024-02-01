@@ -162,6 +162,7 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Fixed variable to specify business-unit for RAM shared subnets | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | application environment | `string` | n/a | yes |
 | <a name="input_extra_user_data_content"></a> [extra\_user\_data\_content](#input\_extra\_user\_data\_content) | Extra user data content for Bastion ec2 | `string` | `""` | no |
+| <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | Name of instance | `string` | `"bastion_linux"` | no |
 | <a name="input_log_auto_clean"></a> [log\_auto\_clean](#input\_log\_auto\_clean) | Enable or not the lifecycle | `string` | n/a | yes |
 | <a name="input_log_expiry_days"></a> [log\_expiry\_days](#input\_log\_expiry\_days) | Number of days before logs expiration | `number` | n/a | yes |
 | <a name="input_log_glacier_days"></a> [log\_glacier\_days](#input\_log\_glacier\_days) | Number of days before moving logs to Glacier | `number` | n/a | yes |

@@ -86,7 +86,7 @@ resource "aws_kms_key_policy" "bastion_s3" {
         ]
         Effect = "Allow"
         Principal = {
-          AWS = "arn:aws:iam::${data.aws_caller_identity.current.account_id}:role/bastion_linux_ec2_role"
+          AWS = aws_iam_role.bastion_role.arn
         }
 
         Resource = aws_kms_key.bastion_s3.arn
@@ -159,7 +159,7 @@ module "s3-bucket" {
   tags = merge(
     var.tags_common,
     {
-      Name = "bastion-linux"
+      Name = var.instance_name
     },
   )
 }
@@ -200,13 +200,13 @@ resource "aws_s3_object" "user_public_keys" {
 # Security Groups
 resource "aws_security_group" "bastion_linux" {
   description = "Configure bastion access - ingress should be only from Systems Session Manager (SSM)"
-  name        = "bastion-linux-${var.app_name}"
+  name        = "${replace(var.instance_name, "_", "-")}-${var.app_name}"
   vpc_id      = data.aws_vpc.shared_vpc.id
 
   tags = merge(
     var.tags_common,
     {
-      Name = "bastion-linux-${var.app_name}"
+      Name = "${replace(var.instance_name, "_", "-")}-${var.app_name}"
     }
   )
 }
@@ -214,7 +214,7 @@ resource "aws_security_group" "bastion_linux" {
 resource "aws_security_group_rule" "bastion_linux_egress_1" {
   security_group_id = aws_security_group.bastion_linux.id
 
-  description = "bastion_linux_to_local_subnet_CIDRs"
+  description = "${var.instance_name}_to_local_subnet_CIDRs"
   type        = "egress"
   from_port   = "0"
   to_port     = "65535"
@@ -225,7 +225,7 @@ resource "aws_security_group_rule" "bastion_linux_egress_1" {
 resource "aws_security_group_rule" "bastion_linux_egress_2" {
   security_group_id = aws_security_group.bastion_linux.id
 
-  description              = "bastion_linux_egress_to_interface_endpoints"
+  description              = "${var.instance_name}_egress_to_interface_endpoints"
   type                     = "egress"
   from_port                = "443"
   to_port                  = "443"
@@ -236,7 +236,7 @@ resource "aws_security_group_rule" "bastion_linux_egress_2" {
 resource "aws_security_group_rule" "bastion_linux_egress_3" {
   security_group_id = aws_security_group.bastion_linux.id
 
-  description     = "bastion_linux_egress_to_s3_endpoint"
+  description     = "${var.instance_name}_egress_to_s3_endpoint"
   type            = "egress"
   from_port       = "443"
   to_port         = "443"
@@ -259,14 +259,14 @@ data "aws_iam_policy_document" "bastion_assume_policy_document" {
 }
 
 resource "aws_iam_role" "bastion_role" {
-  name               = "bastion_linux_ec2_role"
+  name               = "${var.instance_name}_ec2_role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.bastion_assume_policy_document.json
 
   tags = merge(
     var.tags_common,
     {
-      Name = "bastion_linux_ec2_role"
+      Name = "${var.instance_name}_ec2_role"
     },
   )
 }
@@ -318,7 +318,7 @@ data "aws_iam_policy_document" "bastion_policy_document" {
 }
 
 resource "aws_iam_policy" "bastion_policy" {
-  name   = "bastion"
+  name   = var.instance_name
   policy = data.aws_iam_policy_document.bastion_policy_document.json
 }
 
@@ -355,7 +355,7 @@ data "aws_iam_policy_document" "bastion_ssm_s3_policy_document" {
 }
 
 resource "aws_iam_policy" "bastion_ssm_s3_policy" {
-  name   = "bastion_ssm_s3"
+  name   = "${var.instance_name}_ssm_s3"
   policy = data.aws_iam_policy_document.bastion_ssm_s3_policy_document.json
 }
 
@@ -365,7 +365,7 @@ resource "aws_iam_role_policy_attachment" "bastion_host_ssm_s3" {
 }
 
 resource "aws_iam_instance_profile" "bastion_profile" {
-  name = "bastion-ec2-profile"
+  name = "${replace(var.instance_name, "_", "-")}-ec2-profile"
   role = aws_iam_role.bastion_role.name
   path = "/"
 }
@@ -388,7 +388,7 @@ data "aws_ami" "linux_2_image" {
 }
 
 resource "aws_launch_template" "bastion_linux_template" {
-  name = "bastion_linux_template"
+  name = "${var.instance_name}_template"
 
   block_device_mappings {
     device_name = "/dev/xvda"
@@ -437,7 +437,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     tags = merge(
       var.tags_common,
       {
-        Name = "bastion_linux"
+        Name = var.instance_name
       }
     )
   }
@@ -461,7 +461,7 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
     version = "$Latest"
   }
   availability_zones        = ["${var.region}a"]
-  name                      = "bastion_linux_daily"
+  name                      = "${var.instance_name}_daily"
   max_size                  = 1
   min_size                  = 1
   health_check_grace_period = 300
@@ -471,7 +471,7 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
 
   tag {
     key                 = "Name"
-    value               = "bastion_linux"
+    value               = var.instance_name
     propagate_at_launch = true
   }
 
@@ -487,7 +487,7 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
 }
 
 resource "aws_autoscaling_schedule" "bastion_linux_scale_down" {
-  scheduled_action_name  = "bastion_linux_scale_down"
+  scheduled_action_name  = "${var.instance_name}_scale_down"
   min_size               = 0
   max_size               = 0
   desired_capacity       = 0
@@ -496,7 +496,7 @@ resource "aws_autoscaling_schedule" "bastion_linux_scale_down" {
 }
 
 resource "aws_autoscaling_schedule" "bastion_linux_scale_up" {
-  scheduled_action_name  = "bastion_linux_scale_up"
+  scheduled_action_name  = "${var.instance_name}_scale_up"
   min_size               = 1
   max_size               = 1
   desired_capacity       = 1
