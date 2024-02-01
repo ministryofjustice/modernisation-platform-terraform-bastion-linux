@@ -130,4 +130,5 @@ variable "autoscaling_cron" {
 variable "custom_s3_kms_arn" {
   description = "KMS ARN for S3 bucket encryption"
   type        = string
+  default = "null"
 }
