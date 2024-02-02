@@ -165,7 +165,7 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Bucket used for bucket log storage and user public keys | `string` | n/a | yes |
 | <a name="input_bucket_versioning"></a> [bucket\_versioning](#input\_bucket\_versioning) | Enable bucket versioning or not | `bool` | n/a | yes |
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Fixed variable to specify business-unit for RAM shared subnets | `string` | n/a | yes |
-| <a name="input_custom_s3_kms_arn"></a> [custom\_s3\_kms\_arn](#input\_custom\_s3\_kms\_arn) | KMS ARN for S3 bucket encryption | `string` | `"null"` | no |
+| <a name="input_custom_s3_kms_arn"></a> [custom\_s3\_kms\_arn](#input\_custom\_s3\_kms\_arn) | KMS ARN for S3 bucket encryption | `string` | `null` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | application environment | `string` | n/a | yes |
 | <a name="input_extra_user_data_content"></a> [extra\_user\_data\_content](#input\_extra\_user\_data\_content) | Extra user data content for Bastion ec2 | `string` | `""` | no |
 | <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | Name of instance | `string` | `"bastion_linux"` | no |
