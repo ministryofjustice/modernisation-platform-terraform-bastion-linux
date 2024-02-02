@@ -320,7 +320,7 @@ data "aws_iam_policy_document" "bastion_policy_document" {
       "kms:Encrypt",
       "kms:Decrypt"
     ]
-    resources = local.kms_key_arn
+    resources = [local.kms_key_arn]
   }
 }
 
