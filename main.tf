@@ -120,7 +120,7 @@ module "s3-bucket" {
   replication_enabled = false
   force_destroy       = true
 
-  custom_kms_key = length(var.custom_s3_kms_arn) > 1 ? var.custom_s3_kms_arn : null
+  custom_kms_key = try(var.custom_s3_kms_arn, false) ? var.custom_s3_kms_arn : ""
 
   lifecycle_rule = [
     {
