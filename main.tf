@@ -176,7 +176,7 @@ resource "aws_s3_object" "bucket_public_keys_readme" {
 
   key        = "public-keys/README.txt"
   content    = "Drop here the ssh public keys of the instances you want to control"
-  kms_key_id = length(var.custom_s3_kms_arn) > 1 ? var.custom_s3_kms_arn : aws_kms_key.bastion_s3[0].arn
+  kms_key_id = local.kms_key_arn
 
   tags = merge(
     var.tags_common,
@@ -193,7 +193,7 @@ resource "aws_s3_object" "user_public_keys" {
   bucket     = module.s3-bucket.bucket.id
   key        = "public-keys/${each.key}.pub"
   content    = each.value
-  kms_key_id = length(var.custom_s3_kms_arn) > 1 ? var.custom_s3_kms_arn : aws_kms_key.bastion_s3[0].arn
+  kms_key_id = local.kms_key_arn
 
   tags = merge(
     var.tags_common,
@@ -320,7 +320,7 @@ data "aws_iam_policy_document" "bastion_policy_document" {
       "kms:Encrypt",
       "kms:Decrypt"
     ]
-    resources = [aws_kms_key.bastion_s3[0].arn]
+    resources = local.kms_key_arn
   }
 }
 
