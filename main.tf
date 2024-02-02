@@ -50,7 +50,7 @@ data "aws_vpc_endpoint" "s3" {
 
 # S3
 resource "aws_kms_key" "bastion_s3" {
-  count               = length(var.custom_s3_kms_arn) > 1 ? 0 : 1
+  count               = var.custom_s3_kms_arn != "" ? 0 : 1
   enable_key_rotation = true
 
   tags = merge(
@@ -62,14 +62,14 @@ resource "aws_kms_key" "bastion_s3" {
 }
 
 resource "aws_kms_alias" "bastion_s3_alias" {
-  count = length(var.custom_s3_kms_arn) > 1 ? 0 : 1
+  count = var.custom_s3_kms_arn != "" ? 0 : 1
 
   name          = "alias/s3-${var.bucket_name}_key"
   target_key_id = aws_kms_key.bastion_s3[0].arn
 }
 
 resource "aws_kms_key_policy" "bastion_s3" {
-  count = length(var.custom_s3_kms_arn) > 1 ? 0 : 1
+  count = var.custom_s3_kms_arn != "" ? 0 : 1
 
   key_id = aws_kms_key.bastion_s3[0].id
   policy = jsonencode({
@@ -120,7 +120,7 @@ module "s3-bucket" {
   replication_enabled = false
   force_destroy       = true
 
-  custom_kms_key = try(var.custom_s3_kms_arn, false) ? var.custom_s3_kms_arn : ""
+  custom_kms_key = var.custom_s3_kms_arn != "" ? var.custom_s3_kms_arn : ""
 
   lifecycle_rule = [
     {
