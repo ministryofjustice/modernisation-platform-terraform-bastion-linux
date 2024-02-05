@@ -15,7 +15,7 @@ module "bastion_linux" {
   instance_name = "bastion_linux_${count.index + 1}"
 
   # s3 - used for logs and user ssh public keys
-  bucket_name          = "bastion-${count.index + 1}"
+  bucket_name = "bastion-${count.index + 1}"
   # public keys
   public_key_data = local.public_key_data.keys[local.environment]
   # logs
