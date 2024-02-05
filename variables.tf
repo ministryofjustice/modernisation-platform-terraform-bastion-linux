@@ -65,24 +65,6 @@ variable "bucket_name" {
   }
 }
 
-variable "bucket_versioning" {
-  type        = bool
-  description = "Enable bucket versioning or not"
-  validation {
-    condition     = (var.bucket_versioning == true || var.bucket_versioning == false)
-    error_message = "Variable bucket_versioning must be boolean."
-  }
-}
-
-variable "bucket_force_destroy" {
-  type        = bool
-  description = "The bucket and all objects should be destroyed when using true"
-  validation {
-    condition     = (var.bucket_force_destroy == true || var.bucket_force_destroy == false)
-    error_message = "Variable bucket_force_destroy must be boolean."
-  }
-}
-
 #### Logs
 variable "log_auto_clean" {
   type        = string
