@@ -47,8 +47,6 @@ module "bastion_linux" {
 
   # s3 - used for logs and user public keys
   bucket_name           = "bastion"
-  bucket_versioning     = true
-  bucket_force_destroy  = true
   # public keys
   public_key_data       = local.public_key_data.keys[local.environment]
   # logs
@@ -156,9 +154,7 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="input_allow_ssh_commands"></a> [allow\_ssh\_commands](#input\_allow\_ssh\_commands) | Allow SSH commands to be specified | `bool` | n/a | yes |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of application | `string` | n/a | yes |
 | <a name="input_autoscaling_cron"></a> [autoscaling\_cron](#input\_autoscaling\_cron) | Cron expressions for scale up and scale down | `map(string)` | <pre>{<br>  "down": "0 20 * * *",<br>  "up": "0 5 * * *"<br>}</pre> | no |
-| <a name="input_bucket_force_destroy"></a> [bucket\_force\_destroy](#input\_bucket\_force\_destroy) | The bucket and all objects should be destroyed when using true | `bool` | n/a | yes |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Bucket used for bucket log storage and user public keys | `string` | n/a | yes |
-| <a name="input_bucket_versioning"></a> [bucket\_versioning](#input\_bucket\_versioning) | Enable bucket versioning or not | `bool` | n/a | yes |
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Fixed variable to specify business-unit for RAM shared subnets | `string` | n/a | yes |
 | <a name="input_environment"></a> [environment](#input\_environment) | application environment | `string` | n/a | yes |
 | <a name="input_extra_user_data_content"></a> [extra\_user\_data\_content](#input\_extra\_user\_data\_content) | Extra user data content for Bastion ec2 | `string` | `""` | no |
