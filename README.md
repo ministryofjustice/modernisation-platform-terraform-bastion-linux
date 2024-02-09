@@ -69,6 +69,11 @@ module "bastion_linux" {
 }
 ```
 
+#### Note:
+Passing in a custom KMS key? You'll need to make sure the bastion iam role has permissions to use it.
+See `aws_kms_key_policy.bastion_s3` in `main.tf` for an example.
+This module ouputs the bastion iam role object (see `outputs.tf`), so you can use it in your own policy.
+
 ## Looking for issues?
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
 
@@ -156,6 +161,7 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="input_autoscaling_cron"></a> [autoscaling\_cron](#input\_autoscaling\_cron) | Cron expressions for scale up and scale down | `map(string)` | <pre>{<br>  "down": "0 20 * * *",<br>  "up": "0 5 * * *"<br>}</pre> | no |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Bucket used for bucket log storage and user public keys | `string` | n/a | yes |
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Fixed variable to specify business-unit for RAM shared subnets | `string` | n/a | yes |
+| <a name="input_custom_s3_kms_arn"></a> [custom\_s3\_kms\_arn](#input\_custom\_s3\_kms\_arn) | KMS ARN for S3 bucket encryption | `string` | `""` | no |
 | <a name="input_environment"></a> [environment](#input\_environment) | application environment | `string` | n/a | yes |
 | <a name="input_extra_user_data_content"></a> [extra\_user\_data\_content](#input\_extra\_user\_data\_content) | Extra user data content for Bastion ec2 | `string` | `""` | no |
 | <a name="input_instance_name"></a> [instance\_name](#input\_instance\_name) | Name of instance | `string` | `"bastion_linux"` | no |
@@ -173,6 +179,7 @@ In order to prevent older versions from being retained forever, in addition to t
 
 | Name | Description |
 |------|-------------|
+| <a name="output_bastion_iam_role"></a> [bastion\_iam\_role](#output\_bastion\_iam\_role) | IAM role of bastion |
 | <a name="output_bastion_launch_template"></a> [bastion\_launch\_template](#output\_bastion\_launch\_template) | Launch template of bastion |
 | <a name="output_bastion_s3_bucket"></a> [bastion\_s3\_bucket](#output\_bastion\_s3\_bucket) | S3 bucket of bastion |
 | <a name="output_bastion_security_group"></a> [bastion\_security\_group](#output\_bastion\_security\_group) | Security group of bastion |
