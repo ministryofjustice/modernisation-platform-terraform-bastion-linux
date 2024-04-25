@@ -55,6 +55,12 @@ variable "allow_ssh_commands" {
   }
 }
 
+variable "volume_size" {
+  type        = number
+  default     = 8
+  description = "Size of the volume in gibibytes (GiB)"
+}
+
 ## S3
 variable "bucket_name" {
   type        = string

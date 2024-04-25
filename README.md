@@ -174,6 +174,7 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="input_subnet_set"></a> [subnet\_set](#input\_subnet\_set) | Fixed variable to specify subnet-set for RAM shared subnets | `string` | n/a | yes |
 | <a name="input_tags_common"></a> [tags\_common](#input\_tags\_common) | MOJ required tags | `map(string)` | n/a | yes |
 | <a name="input_tags_prefix"></a> [tags\_prefix](#input\_tags\_prefix) | prefix for name tags | `string` | n/a | yes |
+| <a name="input_volume_size"></a> [log\_volume\_size](#input\_volume\_size) | Size of the volume in gibibytes (GiB | `number` | 8 | no |
 
 ## Outputs
 
