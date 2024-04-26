@@ -401,7 +401,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     device_name = "/dev/xvda"
 
     ebs {
-      volume_size = 8
+      volume_size = var.volume_size
       encrypted   = true
     }
   }
