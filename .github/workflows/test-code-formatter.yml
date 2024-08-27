@@ -1,0 +1,18 @@
+name: "Test Code Formatter - Never Merge to Main"
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  format-code:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
+      - uses: ministryofjustice/github-actions/code-formatter@bae97070ef286f6952d7688b030034320384aff0 # v14
+        with:
+            ignore-files: "README.md"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
