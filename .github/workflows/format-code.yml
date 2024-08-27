@@ -2,6 +2,7 @@ name: "Format Code: ensure code formatting guidelines are met"
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
+  workflow_dispatch:
 
 permissions: {}
 
@@ -12,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332 # v4.1.7
-      - uses: ministryofjustice/github-actions/code-formatter@7c689fe2de15e1692f5cceceb132919ab854081c # v14
+      - uses: ministryofjustice/github-actions/code-formatter@bae97070ef286f6952d7688b030034320384aff0 # v14
         with:
             ignore-files: "README.md"
         env:
