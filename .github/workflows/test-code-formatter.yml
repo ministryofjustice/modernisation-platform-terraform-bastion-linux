@@ -1,5 +1,8 @@
 name: "Test Code Formatter - Never Merge to Main"
 on:
+  push:
+    branches:
+      - 'issue7689-testing/*'
   workflow_dispatch:
 
 permissions: {}
