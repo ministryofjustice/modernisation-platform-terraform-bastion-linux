@@ -4,6 +4,7 @@ on:
     branches:
       - 'issue7689-testing/*'
   workflow_dispatch:
+  pull_request:
 
 permissions: {}
 
