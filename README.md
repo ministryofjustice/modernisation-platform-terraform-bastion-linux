@@ -158,7 +158,7 @@ In order to prevent older versions from being retained forever, in addition to t
 |------|-------------|------|---------|:--------:|
 | <a name="input_allow_ssh_commands"></a> [allow\_ssh\_commands](#input\_allow\_ssh\_commands) | Allow SSH commands to be specified | `bool` | n/a | yes |
 | <a name="input_app_name"></a> [app\_name](#input\_app\_name) | Name of application | `string` | n/a | yes |
-| <a name="input_autoscaling_cron"></a> [autoscaling\_cron](#input\_autoscaling\_cron) | Cron expressions for scale up and scale down | `map(string)` | <pre>{<br>  "down": "0 20 * * *",<br>  "up": "0 5 * * *"<br>}</pre> | no |
+| <a name="input_autoscaling_cron"></a> [autoscaling\_cron](#input\_autoscaling\_cron) | Cron expressions for scale up and scale down | `map(string)` | <pre>{<br/>  "down": "0 20 * * *",<br/>  "up": "0 5 * * *"<br/>}</pre> | no |
 | <a name="input_bucket_name"></a> [bucket\_name](#input\_bucket\_name) | Bucket used for bucket log storage and user public keys | `string` | n/a | yes |
 | <a name="input_business_unit"></a> [business\_unit](#input\_business\_unit) | Fixed variable to specify business-unit for RAM shared subnets | `string` | n/a | yes |
 | <a name="input_custom_s3_kms_arn"></a> [custom\_s3\_kms\_arn](#input\_custom\_s3\_kms\_arn) | KMS ARN for S3 bucket encryption | `string` | `""` | no |
