@@ -496,7 +496,7 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
 
 resource "aws_autoscaling_schedule" "bastion_linux_scale_down" {
   scheduled_action_name  = "${var.instance_name}_scale_down"
-  min_size               = 0
+  min_size                      = 0
   max_size               = 0
   desired_capacity       = 0
   recurrence             = var.autoscaling_cron["down"]
