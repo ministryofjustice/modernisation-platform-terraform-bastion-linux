@@ -394,7 +394,12 @@ data "aws_ami" "linux_2_image" {
     values = ["hvm"]
   }
 }
-
+resource "aws_ssm_parameter" "linux_ami" {
+  name        = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  type        = "String"
+  value       = data.aws_ami.linux_2_image.id
+  description = "Latest Amazon Linux 2 AMI ID"
+}
 resource "aws_launch_template" "bastion_linux_template" {
   name = "${var.instance_name}_template"
 
@@ -413,7 +418,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     name = aws_iam_instance_profile.bastion_profile.id
   }
 
-  image_id                             = data.aws_ami.linux_2_image.id
+  image_id                             = aws_iam_instance_profile.bastion_profile.id
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t3.micro"
 
@@ -513,90 +518,3 @@ resource "aws_autoscaling_schedule" "bastion_linux_scale_up" {
 }
 
 
-# SSM Automation for AMI Updates
-resource "aws_ssm_document" "ami_update_automation" {
-  name            = "UpdateAMIAutoScaling"
-  document_type   = "Automation"
-  document_format = "YAML"
-
-  content = <<DOC
-schemaVersion: '0.3'
-description: 'Update AMI ID and refresh Auto Scaling Group'
-parameters:
-  AutoScalingGroupName:
-    type: String
-    description: Name of the Auto Scaling Group
-  LaunchTemplateId:
-    type: String
-    description: ID of the Launch Template
-  LatestAmiParameter:
-    type: String
-    description: SSM Parameter storing the latest AMI ID
-mainSteps:
-  - name: getLatestAMI
-    action: 'aws:executeAwsApi'
-    inputs:
-      Service: ec2
-      Api: DescribeImages
-      Owners:
-        - amazon
-      Filters:
-        - Name: name
-          Values: ['amzn2-ami-hvm*']
-        - Name: virtualization-type
-          Values: ['hvm']
-    outputs:
-      - Name: imageId
-        Selector: '$.Images[0].ImageId'
-        Type: String
-  
-  - name: updateSSMParameter
-    action: 'aws:executeAwsApi'
-    inputs:
-      Service: ssm
-      Api: PutParameter
-      Name: '{{ LatestAmiParameter }}'
-      Value: '{{ getLatestAMI.imageId }}'
-      Type: String
-      Overwrite: true
-  
-  - name: createNewLaunchTemplateVersion
-    action: 'aws:executeAwsApi'
-    inputs:
-      Service: ec2
-      Api: CreateLaunchTemplateVersion
-      LaunchTemplateId: '{{ LaunchTemplateId }}'
-      SourceVersion: '$Latest'
-      LaunchTemplateData:
-        ImageId: '{{ getLatestAMI.imageId }}'
-  
-  - name: updateAutoScalingGroup
-    action: 'aws:executeAwsApi'
-    inputs:
-      Service: autoscaling
-      Api: StartInstanceRefresh
-      AutoScalingGroupName: '{{ AutoScalingGroupName }}'
-      Preferences:
-        MinHealthyPercentage: 50
-DOC
-}
-
-# EventBridge Rule for AMI Updates
-resource "aws_cloudwatch_event_rule" "ami_update" {
-  name                = "ami-update-trigger"
-  description         = "Trigger AMI update automation"
-  schedule_expression = "rate(7 days)"
-}
-
-resource "aws_cloudwatch_event_target" "ami_update" {
-  rule      = aws_cloudwatch_event_rule.ami_update.name
-  target_id = "AMIUpdateAutomation"
-  arn       = "arn:aws:ssm:${data.aws_region.current.name}:${data.aws_caller_identity.current.account_id}:automation-definition/${aws_ssm_document.ami_update_automation.name}"
-  role_arn  = aws_iam_role.automation_role.arn
-
-  input = jsonencode({
-    AutoScalingGroupName = [aws_autoscaling_group.bastion_linux_daily.name]
-    LaunchTemplateId     = aws_launch_template.bastion_linux_template.id
-    LatestAmiParameter   = aws_ssm_parameter.latest_ami.name
-  })
-}
