@@ -7,3 +7,4 @@ jobs:
   call-reusable-code-scanning-workflow:
     uses: ministryofjustice/modernisation-platform-terraform-module-template/.github/workflows/reusable-go-terratest.yml@3b24631f6d955293b7cf1cf5f6eb2cc4255ba274
     secrets: inherit
+    
