@@ -50,6 +50,7 @@ data "aws_vpc_endpoint" "s3" {
 
 # S3
 resource "aws_kms_key" "bastion_s3" {
+  #checkov:skip=CKV2_AWS_64:KMS key policy is defined in a seperate resource below
   count               = var.custom_s3_kms_arn != "" ? 0 : 1
   enable_key_rotation = true
 
