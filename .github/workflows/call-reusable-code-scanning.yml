@@ -1,7 +1,8 @@
 on:
-    workflow_dispatch:    
+    workflow_dispatch:
+    push:
+        branches: spike/7108-reusable-workflows
 jobs:
   call-reusable-code-scanning-workflow:
     uses: ministryofjustice/modernisation-platform-terraform-module-template/.github/workflows/reusable-code-scanning.yml@19e9ed0
     secrets: inherit
-
