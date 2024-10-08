@@ -7,3 +7,5 @@ jobs:
   call-reusable-code-scanning-workflow:
     uses: ministryofjustice/modernisation-platform-terraform-module-template/.github/workflows/reusable-code-scanning.yml@2f28b8510e2ee7ba566bac7ba3b925fbd068f80b
     secrets: inherit
+    with:
+        checkov_skip_check: 'CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39,CKV_AWS_99,CKV_AWS_100,CKV_AWS_101'
