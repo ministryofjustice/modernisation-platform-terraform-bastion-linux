@@ -1,4 +1,4 @@
-name: Call Reusable Code Scanning Workflow
+name: Call Reusable Go Terratest Workflow
 on:
     workflow_dispatch:
     push:
