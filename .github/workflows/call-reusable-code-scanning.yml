@@ -4,6 +4,5 @@ on:
         branches: spike/7108-reusable-workflows
 jobs:
   call-reusable-code-scanning-workflow:
-    uses: ministryofjustice/modernisation-platform-terraform-module-template/.github/workflows/reusable-code-scanning.yml@19e9ed052fc523a74279973c8918f9a71f747ed2
+    uses: ministryofjustice/modernisation-platform-terraform-module-template/.github/workflows/reusable-code-scanning.yml@2c644556ec644dcda200714130ef5fbed43e616c
     secrets: inherit
-    
