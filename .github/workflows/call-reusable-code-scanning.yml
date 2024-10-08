@@ -1,0 +1,7 @@
+on:
+    workflow_dispatch:    
+jobs:
+  call-reusable-code-scanning-workflow:
+    uses: ministryofjustice/modernisation-platform-terraform-module-template/.github/workflows/reusable-code-scanning.yml@19e9ed0
+    secrets: inherit
+
