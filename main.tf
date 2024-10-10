@@ -394,6 +394,9 @@ data "aws_ami" "linux_2_image" {
     values = ["hvm"]
   }
 }
+data "aws_ssm_parameter" "linux_ami" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
 
 resource "aws_launch_template" "bastion_linux_template" {
   name = "${var.instance_name}_template"
@@ -413,7 +416,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     name = aws_iam_instance_profile.bastion_profile.id
   }
 
-  image_id                             = data.aws_ami.linux_2_image.id
+  image_id                             = data.aws_ssm_parameter.linux_ami.value
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t3.micro"
 
@@ -511,3 +514,5 @@ resource "aws_autoscaling_schedule" "bastion_linux_scale_up" {
   recurrence             = var.autoscaling_cron["up"]
   autoscaling_group_name = aws_autoscaling_group.bastion_linux_daily.name
 }
+
+
