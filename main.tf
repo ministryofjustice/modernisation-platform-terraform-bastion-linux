@@ -379,22 +379,6 @@ resource "aws_iam_instance_profile" "bastion_profile" {
 }
 
 ## Bastion
-
-data "aws_ami" "linux_2_image" {
-  most_recent = true
-  owners      = ["amazon"]
-
-  filter {
-    name   = "name"
-    values = ["amzn2-ami-hvm*"]
-  }
-
-  filter {
-    name   = "virtualization-type"
-    values = ["hvm"]
-  }
-}
-
 resource "aws_launch_template" "bastion_linux_template" {
   name = "${var.instance_name}_template"
 
@@ -413,7 +397,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     name = aws_iam_instance_profile.bastion_profile.id
   }
 
-  image_id                             = data.aws_ami.linux_2_image.id
+  image_id                             = "resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = "t3.micro"
 
