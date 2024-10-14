@@ -61,6 +61,12 @@ resource "aws_kms_key" "bastion_s3" {
   )
 }
 
+resource "aws_kms_alias" "bastion_s3" {
+  count         = var.custom_s3_kms_arn != "" ? 0 : 1
+  name_prefix   = "alias/modernisation-platform-bastion"
+  target_key_id = aws_kms_key.bastion_s3[0].id
+}
+
 resource "aws_kms_alias" "bastion_s3_alias" {
   count = var.custom_s3_kms_arn != "" ? 0 : 1
 
