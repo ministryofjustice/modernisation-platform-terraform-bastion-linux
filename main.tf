@@ -50,6 +50,7 @@ data "aws_vpc_endpoint" "s3" {
 
 # S3
 resource "aws_kms_key" "bastion_s3" {
+  #checkov:skip=CKV2_AWS_64: Policy defined in separate resource
   count               = var.custom_s3_kms_arn != "" ? 0 : 1
   enable_key_rotation = true
 
@@ -65,13 +66,6 @@ resource "aws_kms_alias" "bastion_s3" {
   count         = var.custom_s3_kms_arn != "" ? 0 : 1
   name_prefix   = "alias/modernisation-platform-bastion"
   target_key_id = aws_kms_key.bastion_s3[0].id
-}
-
-resource "aws_kms_alias" "bastion_s3_alias" {
-  count = var.custom_s3_kms_arn != "" ? 0 : 1
-
-  name          = "alias/s3-${var.bucket_name}_key"
-  target_key_id = aws_kms_key.bastion_s3[0].arn
 }
 
 resource "aws_kms_key_policy" "bastion_s3" {
