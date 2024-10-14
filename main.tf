@@ -208,7 +208,7 @@ resource "aws_s3_object" "user_public_keys" {
 # Security Groups
 resource "aws_security_group" "bastion_linux" {
   description = "Configure bastion access - ingress should be only from Systems Session Manager (SSM)"
-  name        = "${replace(var.instance_name, "_", "-")}-${var.app_name}"
+  name_prefix = "${replace(var.instance_name, "_", "-")}-${var.app_name}"
   vpc_id      = data.aws_vpc.shared_vpc.id
 
   tags = merge(
@@ -267,7 +267,7 @@ data "aws_iam_policy_document" "bastion_assume_policy_document" {
 }
 
 resource "aws_iam_role" "bastion_role" {
-  name               = "${var.instance_name}_ec2_role"
+  name_prefix        = "${var.instance_name}_ec2_role"
   path               = "/"
   assume_role_policy = data.aws_iam_policy_document.bastion_assume_policy_document.json
 
@@ -326,8 +326,8 @@ data "aws_iam_policy_document" "bastion_policy_document" {
 }
 
 resource "aws_iam_policy" "bastion_policy" {
-  name   = var.instance_name
-  policy = data.aws_iam_policy_document.bastion_policy_document.json
+  name_prefix = var.instance_name
+  policy      = data.aws_iam_policy_document.bastion_policy_document.json
 }
 
 resource "aws_iam_role_policy_attachment" "bastion_s3" {
@@ -363,8 +363,8 @@ data "aws_iam_policy_document" "bastion_ssm_s3_policy_document" {
 }
 
 resource "aws_iam_policy" "bastion_ssm_s3_policy" {
-  name   = "${var.instance_name}_ssm_s3"
-  policy = data.aws_iam_policy_document.bastion_ssm_s3_policy_document.json
+  name_prefix = "${var.instance_name}_ssm_s3"
+  policy      = data.aws_iam_policy_document.bastion_ssm_s3_policy_document.json
 }
 
 resource "aws_iam_role_policy_attachment" "bastion_host_ssm_s3" {
@@ -373,14 +373,14 @@ resource "aws_iam_role_policy_attachment" "bastion_host_ssm_s3" {
 }
 
 resource "aws_iam_instance_profile" "bastion_profile" {
-  name = "${replace(var.instance_name, "_", "-")}-ec2-profile"
-  role = aws_iam_role.bastion_role.name
-  path = "/"
+  name_prefix = "${replace(var.instance_name, "_", "-")}-ec2-profile"
+  role        = aws_iam_role.bastion_role.name
+  path        = "/"
 }
 
 ## Bastion
 resource "aws_launch_template" "bastion_linux_template" {
-  name = "${var.instance_name}_template"
+  name_prefix = "${var.instance_name}_template"
 
   block_device_mappings {
     device_name = "/dev/xvda"
@@ -453,7 +453,7 @@ resource "aws_autoscaling_group" "bastion_linux_daily" {
     version = "$Latest"
   }
   availability_zones        = ["${var.region}a"]
-  name                      = "${var.instance_name}_daily"
+  name_prefix               = "${var.instance_name}_daily"
   max_size                  = 1
   min_size                  = 1
   health_check_grace_period = 300
