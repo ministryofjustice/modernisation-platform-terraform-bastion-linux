@@ -130,7 +130,6 @@ In order to prevent older versions from being retained forever, in addition to t
 | [aws_iam_role_policy_attachment.bastion_managed](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_iam_role_policy_attachment.bastion_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/iam_role_policy_attachment) | resource |
 | [aws_kms_alias.bastion_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
-| [aws_kms_alias.bastion_s3_alias](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_alias) | resource |
 | [aws_kms_key.bastion_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key) | resource |
 | [aws_kms_key_policy.bastion_s3](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/kms_key_policy) | resource |
 | [aws_launch_template.bastion_linux_template](https://registry.terraform.io/providers/hashicorp/aws/latest/docs/resources/launch_template) | resource |
@@ -181,6 +180,8 @@ In order to prevent older versions from being retained forever, in addition to t
 | Name | Description |
 |------|-------------|
 | <a name="output_bastion_iam_role"></a> [bastion\_iam\_role](#output\_bastion\_iam\_role) | IAM role of bastion |
+| <a name="output_bastion_kms_key"></a> [bastion\_kms\_key](#output\_bastion\_kms\_key) | n/a |
+| <a name="output_bastion_kms_key_alias"></a> [bastion\_kms\_key\_alias](#output\_bastion\_kms\_key\_alias) | n/a |
 | <a name="output_bastion_launch_template"></a> [bastion\_launch\_template](#output\_bastion\_launch\_template) | Launch template of bastion |
 | <a name="output_bastion_s3_bucket"></a> [bastion\_s3\_bucket](#output\_bastion\_s3\_bucket) | S3 bucket of bastion |
 | <a name="output_bastion_security_group"></a> [bastion\_security\_group](#output\_bastion\_security\_group) | Security group of bastion |
