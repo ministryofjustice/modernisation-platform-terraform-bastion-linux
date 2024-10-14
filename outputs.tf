@@ -13,8 +13,15 @@ output "bastion_s3_bucket" {
   value       = module.s3-bucket
 }
 
-
 output "bastion_iam_role" {
   description = "IAM role of bastion"
   value       = aws_iam_role.bastion_role
+}
+
+output "bastion_kms_key" {
+  value = aws_kms_key.bastion_s3
+}
+
+output "bastion_kms_key_alias" {
+  value = aws_kms_alias.bastion_s3
 }

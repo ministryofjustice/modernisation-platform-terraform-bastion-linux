@@ -27,3 +27,7 @@ output "bastion_s3_bucket_2" {
   description = "S3 bucket of bastion"
   value       = module.bastion_linux[1].bastion_s3_bucket
 }
+
+output "bastion_kms_key" {
+  value = { for idx, bastion in module.bastion_linux : "bastion_${idx}" => bastion.bastion_kms_key }
+}
