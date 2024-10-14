@@ -1,6 +1,6 @@
 output "bastion_security_group" {
   description = "Security group of bastion"
-  value       = aws_security_group.bastion_linux.id
+  value       = aws_security_group.bastion_linux
 }
 
 output "bastion_launch_template" {
