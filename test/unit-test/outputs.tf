@@ -10,7 +10,7 @@ output "bastion_s3_bucket" {
 
 output "bastion_security_group" {
   description = "Bastion security groups"
-  value       = { for idx, bastion in module.bastion_linux : "bastion_${idx}" => bastion.bastion_security_group.id }
+  value       = { for idx, bastion in module.bastion_linux : "bastion_${idx}" => bastion.bastion_security_group_map.id }
 }
 
 output "bastion_kms_key" {

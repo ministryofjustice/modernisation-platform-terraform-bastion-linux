@@ -185,6 +185,7 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="output_bastion_launch_template"></a> [bastion\_launch\_template](#output\_bastion\_launch\_template) | Launch template of bastion |
 | <a name="output_bastion_s3_bucket"></a> [bastion\_s3\_bucket](#output\_bastion\_s3\_bucket) | S3 bucket of bastion |
 | <a name="output_bastion_security_group"></a> [bastion\_security\_group](#output\_bastion\_security\_group) | Security group of bastion |
+| <a name="output_bastion_security_group_map"></a> [bastion\_security\_group\_map](#output\_bastion\_security\_group\_map) | Security group details of bastion |
 <!-- END_TF_DOCS -->
 
 [Standards Link]: https://operations-engineering-reports.cloud-platform.service.justice.gov.uk/public-report/modernisation-platform-terraform-bastion-linux "Repo standards badge."
