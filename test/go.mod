@@ -3,7 +3,7 @@ module github.com/ministryofjustice/modernisation-platform-terraform-bastion-lin
 go 1.23
 
 require (
-	github.com/gruntwork-io/terratest v0.48.0
+	github.com/gruntwork-io/terratest v0.48.1
 	github.com/stretchr/testify v1.10.0
 )
 
