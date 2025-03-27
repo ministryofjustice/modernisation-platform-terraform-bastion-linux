@@ -188,8 +188,8 @@ In order to prevent older versions from being retained forever, in addition to t
 | <a name="output_bastion_security_group_map"></a> [bastion\_security\_group\_map](#output\_bastion\_security\_group\_map) | Security group details of bastion |
 <!-- END_TF_DOCS -->
 
-[Standards Link]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/modernisation-platform-terraform-bastion-linux "Repo standards badge."
-[Standards Icon]: https://github-community.cloud-platform.service.justice.gov.uk/repository-standards/api/modernisation-platform-terraform-bastion-linux/badge
+[Standards Link]: https://github-community.service.justice.gov.uk/repository-standards/modernisation-platform-terraform-bastion-linux "Repo standards badge."
+[Standards Icon]: https://github-community.service.justice.gov.uk/repository-standards/api/modernisation-platform-terraform-bastion-linux/badge
 [Format Code Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform-terraform-bastion-linux/format-code.yml?labelColor=231f20&style=for-the-badge&label=Formate%20Code
 [Format Code Link]: https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux/actions/workflows/format-code.yml
 [Scorecards Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform-terraform-bastion-linux/scorecards.yml?branch=main&labelColor=231f20&style=for-the-badge&label=Scorecards
