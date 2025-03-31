@@ -35,18 +35,19 @@ jobs:
           git fetch --prune
           branches=$(git branch -r | grep -v "^\* main$" | grep -v main | sed 's/origin\///')
           for branch in $branches; do
+            # Skip branches with 'long-term' in their name
+            if [[ "$branch" =~ long-term ]]; then
+              echo "Skipping pruning for long-term branch: $branch"
+              continue
+            fi
+            
             # Check pull requests first
             prs=$(gh pr list --state open --base $branch --json updatedAt,number,title)
             # Determine action based on pull request activity
             if [ -z "$prs" ] || echo $prs | jq -c '.[] | select(.updatedAt | fromdateiso8601 < (now - 7776000))'; then
               # Check if branch has had no commits in the last 3 months
               if [[ $(git log -1 --since="3 months ago" -s origin/$branch) == "" ]]; then
-                if [ "$DRY_RUN" == "true" ]; then
-                  echo "Would delete $branch due to inactivity"
-                else
-                  git push origin --delete $branch
-                  echo "Deleted $branch due to inactivity"
-                fi
+                echo "Would delete $branch due to inactivity"
               fi
             fi
           done
