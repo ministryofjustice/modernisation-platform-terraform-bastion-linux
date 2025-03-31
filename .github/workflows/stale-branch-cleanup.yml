@@ -21,8 +21,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v2
 
+      - name: Setup GitHub CLI
+        run: |
+          gh auth setup-git
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: Delete or Log stale branches and associated PRs
         env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DRY_RUN: ${{ github.event.inputs.dry_run }}
         run: |
           git fetch --prune
