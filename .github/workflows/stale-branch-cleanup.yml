@@ -7,6 +7,12 @@ on:
         description: 'Perform a dry run without deleting branches (true/false)'
         required: true
         default: 'true'
+  push:
+    branches:
+      - feature-9556-automate-pruning-of-stale-branches  # Trigger on push to this specific branch
+  pull_request:
+    branches:
+      - feature-9556-automate-pruning-of-stale-branches  # Trigger on pull request to this specific branch
 
 jobs:
   cleanup:
