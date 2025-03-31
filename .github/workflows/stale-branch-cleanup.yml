@@ -1,0 +1,39 @@
+name: Cleanup of Stale Branches (with Dry Run)
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Perform a dry run without deleting branches (true/false)'
+        required: true
+        default: 'true'
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Delete or Log stale branches and associated PRs
+        env:
+          DRY_RUN: ${{ github.event.inputs.dry_run }}
+        run: |
+          git fetch --prune
+          branches=$(git branch -r | grep -v "^\* main$" | grep -v main | sed 's/origin\///')
+          for branch in $branches; do
+            # Check pull requests first
+            prs=$(gh pr list --state open --base $branch --json updatedAt,number,title)
+            # Determine action based on pull request activity
+            if [ -z "$prs" ] || echo $prs | jq -c '.[] | select(.updatedAt | fromdateiso8601 < (now - 7776000))'; then
+              # Check if branch has had no commits in the last 3 months
+              if [[ $(git log -1 --since="3 months ago" -s origin/$branch) == "" ]]; then
+                if [ "$DRY_RUN" == "true" ]; then
+                  echo "Would delete $branch due to inactivity"
+                else
+                  git push origin --delete $branch
+                  echo "Deleted $branch due to inactivity"
+                fi
+              fi
+            fi
+          done
