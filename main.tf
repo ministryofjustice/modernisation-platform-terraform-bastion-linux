@@ -109,7 +109,7 @@ resource "random_string" "random6" {
 #tfsec:ignore:avd-aws-0132 - The bucket policy is attached to the bucket
 module "s3-bucket" {
   #checkov:skip=CKV2_AWS_64: "Ensure KMS key Policy is defined - not needed here"
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=7b2b75c178f855d8c48d3bda4ac53df782288c02"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" #v8.2.1
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.
