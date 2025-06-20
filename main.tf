@@ -399,7 +399,7 @@ resource "aws_launch_template" "bastion_linux_template" {
 
   image_id                             = "resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
   instance_initiated_shutdown_behavior = "terminate"
-  instance_type                        = "t3.micro"
+  instance_type                        = var.instance_type
 
   metadata_options {
     http_endpoint               = "enabled" # defaults to enabled but is required if http_tokens is specified
