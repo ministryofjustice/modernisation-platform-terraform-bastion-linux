@@ -13,6 +13,7 @@ module "bastion_linux" {
 
   # Instance name
   instance_name = "bastion_linux_${count.index + 1}"
+  instance_type = "m5.large"
 
   # s3 - used for logs and user ssh public keys
   bucket_name = "bastion-${count.index + 1}"
