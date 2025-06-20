@@ -19,6 +19,12 @@ variable "instance_name" {
   default     = "bastion_linux"
 }
 
+variable "instance_type" {
+  type        = string
+  description = "Type of instance"
+  default     = "t3.micro"
+}
+
 variable "business_unit" {
   type        = string
   description = "Fixed variable to specify business-unit for RAM shared subnets"
