@@ -38,6 +38,7 @@ TestBastionCreation 2024-05-23T10:09:13+01:00 logger.go:66:
 --- PASS: TestBastionCreation (182.88s)
 PASS
 ok  	github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux  	183.202s
+```
 
 ## References
 

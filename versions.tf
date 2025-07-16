@@ -1,7 +1,7 @@
 terraform {
   required_providers {
     aws = {
-      version               = "~> 5.0"
+      version               = "~> 6.0"
       source                = "hashicorp/aws"
       configuration_aliases = [aws.share-host, aws.share-tenant]
     }
@@ -10,5 +10,5 @@ terraform {
       version = "~> 3.4"
     }
   }
-  required_version = ">= 1.0.1"
+  required_version = "~> 1.0"
 }

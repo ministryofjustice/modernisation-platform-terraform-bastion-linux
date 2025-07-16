@@ -109,7 +109,7 @@ resource "random_string" "random6" {
 #tfsec:ignore:avd-aws-0132 - The bucket policy is attached to the bucket
 module "s3-bucket" {
   #checkov:skip=CKV2_AWS_64: "Ensure KMS key Policy is defined - not needed here"
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=474f27a3f9bf542a8826c76fb049cc84b5cf136f" #v8.2.1
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.
@@ -251,7 +251,6 @@ resource "aws_security_group_rule" "bastion_linux_egress_3" {
   protocol        = "TCP"
   prefix_list_ids = [data.aws_vpc_endpoint.s3.prefix_list_id]
 }
-
 
 # IAM
 data "aws_iam_policy_document" "bastion_assume_policy_document" {
