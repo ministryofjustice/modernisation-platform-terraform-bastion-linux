@@ -10,35 +10,36 @@ create file named 'bastion_linux.json' and populate with below format. Add user 
 
 ```json
 {
-    "keys": {
-        "development": {
-            "username1": "public key data ~~~~~~~~~~~~~~~",
-            "username2": "public key data ~~~~~~~~~~~~~~~"
-        },
-        "test": {
-            "username1": "public key data ~~~~~~~~~~~~~~~",
-            "username2": "public key data ~~~~~~~~~~~~~~~"
-        },
-        "preproduction": {
-            "username1": "public key data ~~~~~~~~~~~~~~~",
-            "username2": "public key data ~~~~~~~~~~~~~~~"
-        },
-        "production": {
-            "username1": "public key data ~~~~~~~~~~~~~~~",
-            "username2": "public key data ~~~~~~~~~~~~~~~"
-        }
+  "keys": {
+    "development": {
+      "username1": "public key data ~~~~~~~~~~~~~~~",
+      "username2": "public key data ~~~~~~~~~~~~~~~"
+    },
+    "test": {
+      "username1": "public key data ~~~~~~~~~~~~~~~",
+      "username2": "public key data ~~~~~~~~~~~~~~~"
+    },
+    "preproduction": {
+      "username1": "public key data ~~~~~~~~~~~~~~~",
+      "username2": "public key data ~~~~~~~~~~~~~~~"
+    },
+    "production": {
+      "username1": "public key data ~~~~~~~~~~~~~~~",
+      "username2": "public key data ~~~~~~~~~~~~~~~"
     }
+  }
 }
 ```
 
 create a bastion_linux.tf file as below, change options as required
+
 ```terraform
 locals {
   public_key_data = jsondecode(file("./bastion_linux.json"))
 }
 
 module "bastion_linux" {
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux?ref=v3.0.4"
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux?ref=v5.0.0"
 
   providers = {
     aws.share-host   = aws.core-vpc            # core-vpc-(environment) holds the networking for all accounts
@@ -70,11 +71,13 @@ module "bastion_linux" {
 ```
 
 #### Note:
+
 Passing in a custom KMS key? You'll need to make sure the bastion iam role has permissions to use it.
 See `aws_kms_key_policy.bastion_s3` in `main.tf` for an example.
 This module ouputs the bastion iam role object (see `outputs.tf`), so you can use it in your own policy.
 
 ## Looking for issues?
+
 If you're looking to raise an issue with this module, please create a new issue in the [Modernisation Platform repository](https://github.com/ministryofjustice/modernisation-platform/issues).
 
 ## Linting exclusions
@@ -97,23 +100,23 @@ In order to prevent older versions from being retained forever, in addition to t
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.1 |
-| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 5.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | ~> 1.0 |
+| <a name="requirement_aws"></a> [aws](#requirement\_aws) | ~> 6.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | ~> 3.4 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 5.0 |
-| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | ~> 5.0 |
+| <a name="provider_aws"></a> [aws](#provider\_aws) | ~> 6.0 |
+| <a name="provider_aws.share-host"></a> [aws.share-host](#provider\_aws.share-host) | ~> 6.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | ~> 3.4 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_s3-bucket"></a> [s3-bucket](#module\_s3-bucket) | github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | 474f27a3f9bf542a8826c76fb049cc84b5cf136f |
+| <a name="module_s3-bucket"></a> [s3-bucket](#module\_s3-bucket) | github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket | 9facf9fc8f8b8e3f93ffbda822028534b9a75399 |
 
 ## Resources
 
@@ -199,4 +202,3 @@ In order to prevent older versions from being retained forever, in addition to t
 [SCA Link]: https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux/actions/workflows/code-scanning.yml
 [Terraform SCA Icon]: https://img.shields.io/github/actions/workflow/status/ministryofjustice/modernisation-platform-terraform-bastion-linux/code-scanning.yml?branch=main&labelColor=231f20&style=for-the-badge&label=Terraform%20Static%20Code%20Analysis
 [Terraform SCA Link]: https://github.com/ministryofjustice/modernisation-platform-terraform-bastion-linux/actions/workflows/terraform-static-analysis.yml
-
