@@ -1,6 +1,7 @@
 .env
 .DS_Store
 tmp/
+megalinter-reports
 
 ##########################
 ## IntelliJ
