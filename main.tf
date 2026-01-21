@@ -45,7 +45,27 @@ data "aws_vpc_endpoint" "s3" {
   tags = {
     Name = "${var.business_unit}-${var.environment}-com.amazonaws.${var.region}.s3"
   }
+}
 
+# Fetch and validate AMI
+data "aws_ssm_parameter" "amazon_linux_ami" {
+  name = "/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+}
+
+data "aws_ami" "amazon_linux" {
+  owners = ["amazon"]
+
+  filter {
+    name   = "image-id"
+    values = [data.aws_ssm_parameter.amazon_linux_ami.value]
+  }
+
+  lifecycle {
+    postcondition {
+      condition     = self.architecture == "x86_64"
+      error_message = "The AMI must be x86_64 architecture, but got ${self.architecture}. ARM-based AMIs are not supported."
+    }
+  }
 }
 
 # S3
@@ -396,7 +416,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     name = aws_iam_instance_profile.bastion_profile.id
   }
 
-  image_id                             = "resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  image_id                             = data.aws_ami.amazon_linux.id
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = var.instance_type
 
