@@ -396,7 +396,7 @@ resource "aws_launch_template" "bastion_linux_template" {
     name = aws_iam_instance_profile.bastion_profile.id
   }
 
-  image_id                             = "resolve:ssm:/aws/service/ami-amazon-linux-latest/amzn2-ami-hvm-x86_64-gp2"
+  image_id                             = "resolve:ssm:/aws/service/${local.linux_ami_sss_parameter}"
   instance_initiated_shutdown_behavior = "terminate"
   instance_type                        = var.instance_type
 

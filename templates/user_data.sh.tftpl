@@ -1,5 +1,6 @@
 #!/bin/bash -x
 yum -y update --security
+yum install -y cronie
 
 ##########################
 ## ENABLE SSH RECORDING ##
@@ -155,6 +156,12 @@ fi
 EOF
 
 chmod 700 /usr/bin/bastion/sync_users
+
+###########################################
+## ENABLE CRON                           ##
+###########################################
+systemctl enable crond
+systemctl start crond
 
 ###########################################
 ## SCHEDULE SCRIPTS AND SECURITY UPDATES ##
