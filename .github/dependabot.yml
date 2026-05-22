@@ -5,6 +5,8 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
     groups:
       action-dependencies:
         patterns:
@@ -13,10 +15,14 @@ updates:
     directory: "/"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
   - package-ecosystem: "gomod"
     directory: "/test"
     schedule:
       interval: "daily"
+    cooldown:
+      default-days: 7
     groups:
       gomod-dependencies:
         patterns:
