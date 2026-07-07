@@ -180,12 +180,6 @@ resource "aws_s3_object" "bucket_public_keys_readme" {
   kms_key_id = local.kms_key_arn
 
   tags = var.tags_common
-
-  override_provider {
-    default_tags {
-      tags = {}
-    }
-  }
 }
 
 resource "aws_s3_object" "user_public_keys" {
@@ -197,12 +191,6 @@ resource "aws_s3_object" "user_public_keys" {
   kms_key_id = local.kms_key_arn
 
   tags = var.tags_common
-
-  override_provider {
-    default_tags {
-      tags = {}
-    }
-  }
 }
 
 # Security Groups
