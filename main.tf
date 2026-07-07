@@ -179,13 +179,7 @@ resource "aws_s3_object" "bucket_public_keys_readme" {
   content    = "Drop here the ssh public keys of the instances you want to control"
   kms_key_id = local.kms_key_arn
 
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "bastion-${var.app_name}-README.txt"
-    }
-  )
-
+  tags = var.tags_common
 }
 
 resource "aws_s3_object" "user_public_keys" {
@@ -196,13 +190,7 @@ resource "aws_s3_object" "user_public_keys" {
   content    = each.value
   kms_key_id = local.kms_key_arn
 
-  tags = merge(
-    var.tags_common,
-    {
-      Name = "bastion-${var.app_name}-${each.key}-publickey"
-    }
-  )
-
+  tags = var.tags_common
 }
 
 # Security Groups
