@@ -27,6 +27,9 @@ module "bastion_linux" {
   # bastion
   allow_ssh_commands = false
 
+  # KMS - not setting custom_s3_kms_arn, so module will create its own KMS key with key rotation enabled
+  # custom_s3_kms_arn = "" # default - module creates KMS key, alias, and policy
+
   app_name      = var.networking[0].application
   business_unit = local.vpc_name
   subnet_set    = local.subnet_set

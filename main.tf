@@ -109,7 +109,7 @@ resource "random_string" "random6" {
 #tfsec:ignore:avd-aws-0132 - The bucket policy is attached to the bucket
 module "s3-bucket" {
   #checkov:skip=CKV2_AWS_64: "Ensure KMS key Policy is defined - not needed here"
-  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=9facf9fc8f8b8e3f93ffbda822028534b9a75399" # v9.0.0
+  source = "github.com/ministryofjustice/modernisation-platform-terraform-s3-bucket?ref=355197b5695fcce014ad838c7b586b95f9eb4988" # v10.2.0
 
   providers = {
     # Since replication_enabled is false, the below provider is not being used.
@@ -121,7 +121,7 @@ module "s3-bucket" {
   replication_enabled = false
   force_destroy       = true
 
-  custom_kms_key = var.custom_s3_kms_arn != "" ? var.custom_s3_kms_arn : ""
+  custom_kms_key = local.kms_key_arn
 
   lifecycle_rule = [
     {
