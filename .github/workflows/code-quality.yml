@@ -21,5 +21,6 @@ jobs:
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/reusable-code-quality.yml@0d1ab887f8b4a515261e0c61df4ee88e7ee70e68 # v6.2.1
     with:
       validate_all_codebase: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
+      filter_regex_exclude: "^README.md$"
       checkov_arguments: >-
         --skip-check CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
