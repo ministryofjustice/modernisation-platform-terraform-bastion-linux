@@ -22,7 +22,8 @@ jobs:
       security-events: write
     uses: ministryofjustice/modernisation-platform-github-actions/.github/workflows/reusable-code-quality.yml@2cc1ba90676147f4ebf93b67a56463473af39f1e # test: tflint unsecured GITHUB_TOKEN fix
     with:
-      validate_all_codebase: ${{ github.event_name != 'pull_request' && 'true' || 'false' }}
+      # Forced true (test-only): this PR only touches workflow YAML, so tflint needs full-codebase mode to actually run.
+      validate_all_codebase: "true"
       filter_regex_exclude: "^README.md$"
       checkov_arguments: >-
         --skip-check CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
