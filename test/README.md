@@ -4,17 +4,17 @@
 
 On first set up of a new repository, run:
 
-```
+```bash
 go mod init github.com/ministryofjustice/<repo-name>
 ```
 
 Then run:
 
-```
+```bash
 go mod tidy
 ```
 
-# How to run the tests locally
+## How to run the tests locally
 
 Run the tests from within the `test` directory using the `testing-test` user credentials.
 
@@ -24,7 +24,7 @@ Copy the credentials and export them by pasting them into the terminal from whic
 
 Next go into the testing folder and run the tests.
 
-```
+```bash
 cd test
 go mod download
 go test -v
@@ -32,7 +32,7 @@ go test -v
 
 Upon successful run, you should see an output similar to the below
 
-```
+```text
 TestBastionCreation 2024-05-23T10:09:13+01:00 logger.go:66: Destroy complete! Resources: 60 destroyed.
 TestBastionCreation 2024-05-23T10:09:13+01:00 logger.go:66:
 --- PASS: TestBastionCreation (182.88s)
