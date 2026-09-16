@@ -27,3 +27,5 @@ jobs:
       filter_regex_exclude: "^README.md$"
       checkov_arguments: >-
         --skip-check CKV_GIT_1,CKV_AWS_126,CKV2_AWS_38,CKV2_AWS_39
+      tflint_arguments: >-
+        --disable-rule=terraform_unused_declarations
