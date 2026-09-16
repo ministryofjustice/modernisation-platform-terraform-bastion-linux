@@ -13,7 +13,7 @@ name: Scorecards supply-chain security
   schedule:
     - cron: '29 5 * * 1'
   push:
-    branches: [ "main" ]
+    branches: ["main"]
 
 # Declare default permissions as read only.
 permissions: read-all
