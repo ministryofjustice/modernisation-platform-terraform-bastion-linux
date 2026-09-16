@@ -1,3 +1,5 @@
+---
+name: Unit-Tests
 on:
   pull_request:
     types: [opened, edited, reopened, synchronize]
@@ -66,4 +68,4 @@ jobs:
         run: |
           chmod 700 ../scripts/redact-output.sh
           go test -v | ../scripts/redact-output.sh
-          exit ${PIPESTATUS[0]}
+          exit "${PIPESTATUS[0]}"
